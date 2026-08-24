@@ -54,5 +54,4 @@ export interface Purchase {
   route?: Route
 }
 
-
 export { supabase }
