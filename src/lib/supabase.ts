@@ -53,5 +53,3 @@ export interface Purchase {
   created_at: string
   route?: Route
 }
-
-export { supabase }
