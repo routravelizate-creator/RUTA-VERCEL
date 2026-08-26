@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MapPin, FileText, Navigation, Users, Compass, Download, ArrowRight, Star } from 'lucide-react'
+import { MapPin, FileText, Navigation, Users, Compass, Download, ArrowRight } from 'lucide-react'
 import { supabase, Route } from '../lib/supabase'
 import { RouteCard } from '../components/RouteCard'
 
@@ -48,21 +48,18 @@ export function LandingPage() {
           </a>
         </div>
 
-        {/* Stats */}
+        {/* Stats reales */}
         <div className="absolute bottom-0 left-0 right-0 z-10 pb-8">
           <div className="max-w-4xl mx-auto px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl">
-              {[
-                { value: '48', label: 'rutas editadas' },
-                { value: '4.8', label: 'valoración media' },
-                { value: '4', label: 'rutas publicadas' },
-                { value: '12k', label: 'viajes empezados' },
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">{stat.value}</p>
-                  <p className="text-xs md:text-sm text-sand-500 mt-1">{stat.label}</p>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl">
+              <div className="text-center">
+                <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">{routes.length}</p>
+                <p className="text-xs md:text-sm text-sand-500 mt-1">rutas publicadas</p>
+              </div>
+              <div className="text-center">
+                <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">100%</p>
+                <p className="text-xs md:text-sm text-sand-500 mt-1">hechas por viajeros</p>
+              </div>
             </div>
           </div>
         </div>
@@ -145,7 +142,7 @@ export function LandingPage() {
               </p>
               <div className="flex items-center gap-3 text-sand-700">
                 <Users className="w-5 h-5 text-forest-600" />
-                <span className="text-sm font-medium">3 viajeros coinciden del 12 al 19 de septiembre en Galicia</span>
+                <span className="text-sm font-medium">Únete a la comunidad y comparte tus rutas</span>
               </div>
             </div>
             <div className="relative">
@@ -154,11 +151,6 @@ export function LandingPage() {
                 alt="Viajeros en ruta"
                 className="rounded-2xl shadow-xl w-full h-80 object-cover"
               />
-              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-4 flex items-center gap-2">
-                <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-                <span className="font-serif text-lg text-sand-900">4.8</span>
-                <span className="text-sm text-sand-500">valoración</span>
-              </div>
             </div>
           </div>
         </div>

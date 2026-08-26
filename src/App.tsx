@@ -8,6 +8,9 @@ import { AdminLogin } from './pages/AdminLogin'
 import { AdminPanel } from './pages/AdminPanel'
 import { MyRoutesPage } from './pages/MyRoutesPage'
 import { PublishRoutePage } from './pages/PublishRoutePage'
+import { BlogPage } from './pages/BlogPage'
+import { BlogPostPage } from './pages/BlogPostPage'
+import { GuideVerificationPage } from './pages/GuideVerificationPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -39,6 +42,15 @@ export default function App() {
         } />
         <Route path="/publicar" element={
           <PublicLayout><PublishRoutePage /></PublicLayout>
+        } />
+        <Route path="/blog" element={
+          <PublicLayout><BlogPage /></PublicLayout>
+        } />
+        <Route path="/blog/:id" element={
+          <PublicLayout><BlogPostPage /></PublicLayout>
+        } />
+        <Route path="/verificacion-guia" element={
+          <PublicLayout><GuideVerificationPage /></PublicLayout>
         } />
       </Routes>
     </AuthProvider>

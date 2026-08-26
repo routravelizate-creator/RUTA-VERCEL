@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ShieldCheck, Users, MapPin, CircleCheck as CheckCircle, Circle as XCircle, Clock, Plus, LogOut, FileText, Upload, DollarSign, Trash2, CreditCard as Edit } from 'lucide-react'
+import { ShieldCheck, Users, MapPin, Clock, LogOut, DollarSign, FileText, BadgeCheck } from 'lucide-react'
 import { supabase, Profile, Route } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { AdminUsers } from '../components/admin/AdminUsers'
 import { AdminRoutes } from '../components/admin/AdminRoutes'
 import { AdminPurchases } from '../components/admin/AdminPurchases'
+import { AdminBlog } from '../components/admin/AdminBlog'
+import { AdminVerifications } from '../components/admin/AdminVerifications'
 
-type Tab = 'overview' | 'users' | 'routes' | 'purchases'
+type Tab = 'overview' | 'users' | 'routes' | 'purchases' | 'blog' | 'verifications'
 
 export function AdminPanel() {
   const { profile, isAdmin, loading, signOut } = useAuth()
@@ -16,6 +18,7 @@ export function AdminPanel() {
   const [pendingCount, setPendingCount] = useState(0)
   const [routeCount, setRouteCount] = useState(0)
   const [purchaseCount, setPurchaseCount] = useState(0)
+  const [verificationCount, setVerificationCount] = useState(0)
 
   useEffect(() => {
     if (!loading && (!profile || !isAdmin)) {
@@ -34,6 +37,9 @@ export function AdminPanel() {
       // Contar compras
       supabase.from('purchases').select('id', { count: 'exact' })
         .then(({ count }) => setPurchaseCount(count || 0))
+      // Contar verificaciones pendientes
+      supabase.from('guide_verifications').select('id', { count: 'exact' }).eq('status', 'pendiente')
+        .then(({ count }) => setVerificationCount(count || 0))
     }
   }, [isAdmin, tab])
 
@@ -52,6 +58,8 @@ export function AdminPanel() {
     { id: 'users', label: 'Usuarios', icon: Users, badge: pendingCount },
     { id: 'routes', label: 'Rutas', icon: MapPin },
     { id: 'purchases', label: 'Compras', icon: DollarSign },
+    { id: 'blog', label: 'Blog', icon: FileText },
+    { id: 'verifications', label: 'Verificaciones', icon: BadgeCheck, badge: verificationCount },
   ]
 
   return (
@@ -138,9 +146,23 @@ export function AdminPanel() {
                 <p className="text-sm text-sand-500">Compras</p>
               </div>
               <p className="font-serif text-4xl text-sand-900">{purchaseCount}</p>
-              <p className="text-sm text-sand-500 mt-1">compras simuladas</p>
+              <p className="text-sm text-sand-500 mt-1">compras realizadas</p>
               <button onClick={() => setTab('purchases')} className="mt-3 text-sm text-forest-600 font-medium hover:underline">
                 Ver →
+              </button>
+            </div>
+
+            <div className="card p-6 md:col-span-3">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                  <BadgeCheck className="w-5 h-5 text-amber-600" />
+                </div>
+                <p className="text-sm text-sand-500">Verificaciones de guias</p>
+              </div>
+              <p className="font-serif text-4xl text-sand-900">{verificationCount}</p>
+              <p className="text-sm text-sand-500 mt-1">solicitudes pendientes de revisión</p>
+              <button onClick={() => setTab('verifications')} className="mt-3 text-sm text-forest-600 font-medium hover:underline">
+                Gestionar →
               </button>
             </div>
           </div>
@@ -149,6 +171,8 @@ export function AdminPanel() {
         {tab === 'users' && <AdminUsers />}
         {tab === 'routes' && <AdminRoutes />}
         {tab === 'purchases' && <AdminPurchases />}
+        {tab === 'blog' && <AdminBlog />}
+        {tab === 'verifications' && <AdminVerifications />}
       </div>
     </div>
   )

@@ -49,7 +49,31 @@ export interface Purchase {
   user_id: string | null
   guest_email: string | null
   route_id: string
-  payment_status: 'simulado_pagado'
+  payment_status: string
+  stripe_session_id: string | null
+  stripe_payment_intent: string | null
   created_at: string
   route?: Route
+}
+
+export interface BlogPost {
+  id: string
+  title: string
+  excerpt: string
+  content: string
+  image_url: string
+  is_published: boolean
+  created_at: string
+}
+
+export interface GuideVerification {
+  id: string
+  user_id: string
+  full_name: string
+  email: string
+  doc_type: string
+  doc_description: string
+  doc_url: string
+  status: 'pendiente' | 'aprobado' | 'rechazado'
+  created_at: string
 }

@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import { MapPin, Download, FileText, CreditCard, Loader as Loader2, CircleCheck as CheckCircle, Lock, ArrowLeft, ExternalLink } from 'lucide-react'
+import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
+import { MapPin, Download, FileText, CreditCard, Loader as Loader2, CircleCheck as CheckCircle, Lock, ArrowLeft, ExternalLink, Mail } from 'lucide-react'
 import { supabase, Route } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 
 export function RouteDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { profile, loading: authLoading } = useAuth()
   const [route, setRoute] = useState<Route | null>(null)
   const [loading, setLoading] = useState(true)
   const [hasPurchased, setHasPurchased] = useState(false)
   const [paying, setPaying] = useState(false)
-  const [justPaid, setJustPaid] = useState(false)
   const [error, setError] = useState('')
+  const [guestEmail, setGuestEmail] = useState('')
+  const [showGuestInput, setShowGuestInput] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -35,43 +37,72 @@ export function RouteDetailPage() {
         .select('id')
         .eq('route_id', id)
         .eq('user_id', profile.id)
+        .eq('payment_status', 'pagado')
         .maybeSingle()
         .then(({ data }) => setHasPurchased(!!data))
     }
   }, [profile, id])
 
+  // Handle Stripe redirect back
+  useEffect(() => {
+    const paymentStatus = searchParams.get('payment')
+    if (paymentStatus === 'success') {
+      // Poll for payment confirmation
+      const checkPayment = async () => {
+        if (!id) return
+        for (let i = 0; i < 10; i++) {
+          await new Promise(r => setTimeout(r, 1500))
+          const { data } = await supabase
+            .from('purchases')
+            .select('id, payment_status')
+            .eq('route_id', id)
+            .eq('payment_status', 'pagado')
+            .maybeSingle()
+          if (data) {
+            setHasPurchased(true)
+            return
+          }
+        }
+      }
+      checkPayment()
+    }
+  }, [searchParams, id])
+
   const handlePay = async () => {
     setError('')
-    if (!profile) {
-      setError('Debes iniciar sesión para comprar una ruta.')
-      return
-    }
-    if (profile.status !== 'aprobado') {
-      setError('Tu cuenta debe estar aprobada por el administrador antes de comprar.')
-      return
-    }
+    if (!route) return
 
     setPaying(true)
-    // Simulación de pasarela de pago
-    await new Promise(r => setTimeout(r, 1800))
 
-    const { error: insertError } = await supabase
-      .from('purchases')
-      .insert({
-        user_id: profile.id,
-        route_id: id,
-        payment_status: 'simulado_pagado',
+    try {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+      const response = await fetch(`${supabaseUrl}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          route_id: id,
+          user_id: profile?.id || null,
+          guest_email: !profile ? guestEmail : null,
+          origin: window.location.origin,
+        }),
       })
 
-    if (insertError) {
-      setError('Error al procesar el pago. Es posible que ya hayas comprado esta ruta.')
-      setPaying(false)
-      return
-    }
+      if (!response.ok) {
+        const errData = await response.json()
+        throw new Error(errData.error || 'Error al procesar el pago')
+      }
 
-    setHasPurchased(true)
-    setJustPaid(true)
-    setPaying(false)
+      const { url } = await response.json()
+      if (url) {
+        window.location.href = url
+      }
+    } catch (err: any) {
+      setError(err.message || 'Error al procesar el pago')
+      setPaying(false)
+    }
   }
 
   if (loading || authLoading) {
@@ -90,6 +121,8 @@ export function RouteDetailPage() {
       </div>
     )
   }
+
+  const isAdmin = profile?.role === 'admin' && profile?.status === 'aprobado'
 
   return (
     <div className="min-h-screen pt-20">
@@ -117,14 +150,18 @@ export function RouteDetailPage() {
             <h2 className="font-serif text-2xl text-sand-900 mb-4">Sobre esta ruta</h2>
             <p className="text-sand-700 leading-relaxed whitespace-pre-line">{route.description}</p>
 
-            {hasPurchased && (
+            {(hasPurchased || isAdmin) && (
               <div className="mt-8 space-y-4">
                 <div className="p-5 rounded-xl bg-forest-50 border border-forest-200">
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle className="w-5 h-5 text-forest-600" />
-                    <h3 className="font-serif text-lg text-forest-800">Contenido desbloqueado</h3>
+                    <h3 className="font-serif text-lg text-forest-800">
+                      {isAdmin ? 'Acceso de administrador' : 'Contenido desbloqueado'}
+                    </h3>
                   </div>
-                  <p className="text-sm text-forest-700 mb-4">Ya puedes descargar los archivos y abrir el mapa.</p>
+                  <p className="text-sm text-forest-700 mb-4">
+                    {isAdmin ? 'Puedes descargar todos los archivos de esta ruta.' : 'Ya puedes descargar los archivos y abrir el mapa.'}
+                  </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {route.gpx_url && (
                       <a href={route.gpx_url} download className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white border border-forest-200 hover:border-forest-400 transition-all">
@@ -167,20 +204,17 @@ export function RouteDetailPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-28">
               <div className="card p-6">
-                {hasPurchased ? (
+                {(hasPurchased || isAdmin) ? (
                   <>
                     <div className="text-center mb-4">
                       <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-forest-50 flex items-center justify-center">
                         <CheckCircle className="w-7 h-7 text-forest-600" />
                       </div>
-                      <p className="font-serif text-xl text-sand-900">Ruta comprada</p>
+                      <p className="font-serif text-xl text-sand-900">
+                        {isAdmin ? 'Modo administrador' : 'Ruta comprada'}
+                      </p>
                       <p className="text-sm text-sand-500 mt-1">Precio: {route.price}€</p>
                     </div>
-                    {justPaid && (
-                      <div className="mb-4 p-3 rounded-lg bg-forest-50 border border-forest-200 text-forest-700 text-sm text-center animate-fade-in">
-                        ¡Pago completado! Ya puedes descargar todo el contenido.
-                      </div>
-                    )}
                     <div className="space-y-2">
                       <p className="text-sm text-sand-600 text-center">Accede a tus archivos desde el panel superior.</p>
                     </div>
@@ -193,30 +227,73 @@ export function RouteDetailPage() {
                     </p>
                     <p className="text-sm text-sand-500 mb-6">Pago único · Acceso permanente</p>
 
-                    {!profile && (
-                      <div className="mb-4 p-3 rounded-lg bg-sand-100 border border-sand-200 text-sand-700 text-sm text-center">
-                        <Lock className="w-4 h-4 inline mr-1" />
-                        Inicia sesión para comprar
-                      </div>
-                    )}
-
                     {error && (
                       <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
                         {error}
                       </div>
                     )}
 
-                    <button
-                      onClick={handlePay}
-                      disabled={paying || !profile || profile.status !== 'aprobado'}
-                      className="w-full btn-primary flex items-center justify-center gap-2 mb-3"
-                    >
-                      {paying ? (
-                        <><Loader2 className="w-5 h-5 animate-spin" /> Procesando pago...</>
-                      ) : (
-                        <><CreditCard className="w-5 h-5" /> Pagar y Descargar</>
-                      )}
-                    </button>
+                    {!profile && !showGuestInput && (
+                      <>
+                        <button
+                          onClick={() => setShowGuestInput(true)}
+                          className="w-full btn-primary flex items-center justify-center gap-2 mb-3"
+                        >
+                          <CreditCard className="w-5 h-5" /> Comprar como invitado
+                        </button>
+                        <button
+                          onClick={() => navigate('/ruta/' + id)}
+                          className="w-full btn-secondary text-sm mb-3"
+                        >
+                          <Lock className="w-4 h-4 inline mr-1" /> O inicia sesión
+                        </button>
+                      </>
+                    )}
+
+                    {!profile && showGuestInput && (
+                      <div className="mb-4">
+                        <label className="text-sm font-medium text-sand-700 mb-1 block">Tu email</label>
+                        <div className="relative mb-3">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sand-400" />
+                          <input
+                            type="email"
+                            required
+                            placeholder="tu@email.com"
+                            value={guestEmail}
+                            onChange={e => setGuestEmail(e.target.value)}
+                            className="input-field pl-10 text-sm"
+                          />
+                        </div>
+                        <button
+                          onClick={handlePay}
+                          disabled={paying || !guestEmail}
+                          className="w-full btn-primary flex items-center justify-center gap-2 mb-2"
+                        >
+                          {paying ? (
+                            <><Loader2 className="w-5 h-5 animate-spin" /> Procesando...</>
+                          ) : (
+                            <><CreditCard className="w-5 h-5" /> Pagar {route.price}€</>
+                          )}
+                        </button>
+                        <button onClick={() => setShowGuestInput(false)} className="w-full text-sm text-sand-500 hover:text-sand-700">
+                          Cancelar
+                        </button>
+                      </div>
+                    )}
+
+                    {profile && (
+                      <button
+                        onClick={handlePay}
+                        disabled={paying}
+                        className="w-full btn-primary flex items-center justify-center gap-2 mb-3"
+                      >
+                        {paying ? (
+                          <><Loader2 className="w-5 h-5 animate-spin" /> Procesando pago...</>
+                        ) : (
+                          <><CreditCard className="w-5 h-5" /> Pagar {route.price}€</>
+                        )}
+                      </button>
+                    )}
 
                     <div className="space-y-2 text-sm text-sand-600">
                       <div className="flex items-center gap-2">
@@ -232,7 +309,7 @@ export function RouteDetailPage() {
 
                     <div className="mt-4 pt-4 border-t border-sand-200">
                       <p className="text-xs text-sand-400 text-center">
-                        Pasarela en modo prueba — no se realiza ningún cargo real.
+                        Pago seguro procesado por Stripe
                       </p>
                     </div>
                   </>

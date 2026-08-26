@@ -38,6 +38,7 @@ export function Navbar() {
     { label: 'Rutas', href: '/#rutas' },
     { label: 'Formato', href: '/#formato' },
     { label: 'Comunidad', href: '/#comunidad' },
+    { label: 'Blog', href: '/blog' },
     { label: 'Routraveler', href: '/#routraveler' },
   ]
 

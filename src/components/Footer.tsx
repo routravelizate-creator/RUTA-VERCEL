@@ -21,6 +21,7 @@ export function Footer() {
               <li><a href="/#rutas" className="text-sand-300 hover:text-white transition-colors">Rutas</a></li>
               <li><a href="/#formato" className="text-sand-300 hover:text-white transition-colors">Formato</a></li>
               <li><a href="/#comunidad" className="text-sand-300 hover:text-white transition-colors">Comunidad</a></li>
+              <li><a href="/blog" className="text-sand-300 hover:text-white transition-colors">Blog</a></li>
               <li><a href="/#routraveler" className="text-sand-300 hover:text-white transition-colors">Programa Routraveler</a></li>
             </ul>
           </div>
