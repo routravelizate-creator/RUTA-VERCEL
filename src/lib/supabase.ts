@@ -20,12 +20,17 @@ export interface Profile {
   id: string
   email: string
   full_name: string | null
+  last_name: string | null
+  birth_date: string | null
+  avatar_url: string | null
+  bio: string | null
   role: ProfileRole
   status: ProfileStatus
   phone: string | null
-  bio: string | null
   doc_url: string | null
   doc_type: string | null
+  rating_avg: number
+  rating_count: number
   created_at: string
 }
 
@@ -75,5 +80,25 @@ export interface GuideVerification {
   doc_description: string
   doc_url: string
   status: 'pendiente' | 'aprobado' | 'rechazado'
+  created_at: string
+}
+
+export interface Review {
+  id: string
+  reviewer_id: string
+  route_id: string
+  rating: number
+  comment: string
+  created_at: string
+  reviewer?: Profile
+}
+
+export interface Notification {
+  id: string
+  user_id: string
+  type: string
+  title: string
+  message: string
+  is_read: boolean
   created_at: string
 }

@@ -11,6 +11,7 @@ import { PublishRoutePage } from './pages/PublishRoutePage'
 import { BlogPage } from './pages/BlogPage'
 import { BlogPostPage } from './pages/BlogPostPage'
 import { GuideVerificationPage } from './pages/GuideVerificationPage'
+import { UserProfilePage } from './pages/UserProfilePage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -51,6 +52,9 @@ export default function App() {
         } />
         <Route path="/verificacion-guia" element={
           <PublicLayout><GuideVerificationPage /></PublicLayout>
+        } />
+        <Route path="/usuario/:id" element={
+          <PublicLayout><UserProfilePage /></PublicLayout>
         } />
       </Routes>
     </AuthProvider>
