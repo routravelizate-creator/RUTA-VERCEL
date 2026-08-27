@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { ArrowLeft, Calendar, Loader as Loader2 } from 'lucide-react'
 import { supabase, BlogPost } from '../lib/supabase'
+import { MarkdownContent } from '../components/RichTextEditor'
 
 export function BlogPostPage() {
   const { id } = useParams()
@@ -60,7 +61,7 @@ export function BlogPostPage() {
         </div>
 
         <div className="prose prose-lg max-w-none">
-          <p className="text-sand-700 leading-relaxed whitespace-pre-line">{post.content}</p>
+          <MarkdownContent content={post.content} />
         </div>
       </div>
     </div>

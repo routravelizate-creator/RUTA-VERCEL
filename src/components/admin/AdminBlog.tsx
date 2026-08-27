@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Plus, Loader as Loader2, Trash2, X, Save, FileText, CreditCard as Edit } from 'lucide-react'
 import { supabase, BlogPost } from '../../lib/supabase'
+import { RichTextEditor } from '../RichTextEditor'
 
 export function AdminBlog() {
   const [posts, setPosts] = useState<BlogPost[]>([])
@@ -140,7 +141,11 @@ export function AdminBlog() {
               </div>
               <div>
                 <label className="text-sm font-medium text-sand-700 mb-1 block">Contenido *</label>
-                <textarea required rows={8} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} className="input-field" placeholder="Contenido completo del artículo..." />
+                <RichTextEditor
+                  value={form.content}
+                  onChange={val => setForm({ ...form, content: val })}
+                  placeholder="Escribe el articulo de viaje..."
+                />
               </div>
               <div>
                 <label className="text-sm font-medium text-sand-700 mb-1 block">URL de la imagen *</label>
