@@ -14,7 +14,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 })
 
 export type ProfileStatus = 'pendiente' | 'aprobado' | 'rechazado'
-export type ProfileRole = 'viajero' | 'admin' | 'routraveler'
+export type ProfileRole = 'viajero' | 'admin' | 'editor' | 'routraveler'
 
 export interface Profile {
   id: string

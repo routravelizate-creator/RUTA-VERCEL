@@ -32,8 +32,8 @@ export function AdminLogin() {
       .eq('id', data.user!.id)
       .maybeSingle()
 
-    if (!profileData || profileData.role !== 'admin') {
-      setError('No tienes permisos de administrador.')
+    if (!profileData || (profileData.role !== 'admin' && profileData.role !== 'editor')) {
+      setError('No tienes permisos para acceder al panel.')
       await supabase.auth.signOut()
       setLoading(false)
       return

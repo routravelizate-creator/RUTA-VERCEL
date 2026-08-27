@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CircleCheck as CheckCircle, Circle as XCircle, Clock, Loader as Loader2, Mail, User } from 'lucide-react'
+import { CircleCheck as CheckCircle, Circle as XCircle, Clock, Loader as Loader2, Mail, User, ShieldCheck, PenLine } from 'lucide-react'
 import { supabase, Profile } from '../../lib/supabase'
 
 export function AdminUsers() {
@@ -7,6 +7,7 @@ export function AdminUsers() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'pendiente' | 'aprobado' | 'rechazado' | 'todos'>('pendiente')
   const [acting, setActing] = useState<string | null>(null)
+  const [roleAction, setRoleAction] = useState<string | null>(null)
 
   const fetchUsers = async () => {
     setLoading(true)
@@ -30,6 +31,18 @@ export function AdminUsers() {
       setUsers(prev => prev.map(u => u.id === userId ? { ...u, status } : u))
     }
     setActing(null)
+  }
+
+  const updateRole = async (userId: string, role: 'viajero' | 'editor') => {
+    setRoleAction(userId)
+    const { error } = await supabase.rpc('admin_set_user_role', {
+      p_user_id: userId,
+      p_role: role,
+    })
+    if (!error) {
+      setUsers(prev => prev.map(u => u.id === userId ? { ...u, role } : u))
+    }
+    setRoleAction(null)
   }
 
   const statusBadge = (status: string) => {
@@ -78,7 +91,19 @@ export function AdminUsers() {
                   <p className="text-sm text-sand-500 flex items-center gap-1">
                     <Mail className="w-3 h-3" /> {user.email}
                   </p>
-                  <div className="mt-1">{statusBadge(user.status)}</div>
+                  <div className="mt-1 flex items-center gap-2">
+                    {statusBadge(user.status)}
+                    {user.role === 'editor' && (
+                      <span className="px-2.5 py-1 rounded-full bg-ocean-50 text-ocean-700 text-xs font-medium flex items-center gap-1">
+                        <PenLine className="w-3 h-3" /> Editor
+                      </span>
+                    )}
+                    {user.role === 'admin' && (
+                      <span className="px-2.5 py-1 rounded-full bg-forest-50 text-forest-700 text-xs font-medium flex items-center gap-1">
+                        <ShieldCheck className="w-3 h-3" /> Admin
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -115,14 +140,36 @@ export function AdminUsers() {
               )}
 
               {user.status === 'aprobado' && (
-                <button
-                  onClick={() => updateStatus(user.id, 'rechazado')}
-                  disabled={acting === user.id}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 text-red-700 border border-red-200 text-sm font-medium hover:bg-red-100 transition-all disabled:opacity-50"
-                >
-                  <XCircle className="w-4 h-4" />
-                  Bloquear
-                </button>
+                <div className="flex flex-col gap-2 items-end">
+                  <button
+                    onClick={() => updateStatus(user.id, 'rechazado')}
+                    disabled={acting === user.id}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-50 text-red-700 border border-red-200 text-sm font-medium hover:bg-red-100 transition-all disabled:opacity-50"
+                  >
+                    <XCircle className="w-4 h-4" />
+                    Bloquear
+                  </button>
+                  {user.role === 'viajero' && (
+                    <button
+                      onClick={() => updateRole(user.id, 'editor')}
+                      disabled={roleAction === user.id}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-ocean-50 text-ocean-700 border border-ocean-200 text-sm font-medium hover:bg-ocean-100 transition-all disabled:opacity-50"
+                    >
+                      {roleAction === user.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <PenLine className="w-4 h-4" />}
+                      Hacer editor
+                    </button>
+                  )}
+                  {user.role === 'editor' && (
+                    <button
+                      onClick={() => updateRole(user.id, 'viajero')}
+                      disabled={roleAction === user.id}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-sand-100 text-sand-700 border border-sand-200 text-sm font-medium hover:bg-sand-200 transition-all disabled:opacity-50"
+                    >
+                      {roleAction === user.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <User className="w-4 h-4" />}
+                      Quitar editor
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           ))}
