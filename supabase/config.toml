@@ -1,0 +1,14 @@
+[functions.guide-verification]
+verify_jwt = false
+
+[functions.setup-admin]
+verify_jwt = false
+
+[functions.stripe-checkout]
+verify_jwt = true
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.reset-admin-pass]
+verify_jwt = false
