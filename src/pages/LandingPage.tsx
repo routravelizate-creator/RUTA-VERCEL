@@ -25,7 +25,7 @@ export function LandingPage() {
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1534938665420-4193effeabd4?auto=format&fit=crop&q=80&w=1920"
+            src="https://images.pexels.com/photos/9229469/pexels-photo-9229469.jpeg?auto=compress&cs=tinysrgb&w=1920"
             alt="Ruta de viaje por carretera"
             className="w-full h-full object-cover"
           />
@@ -148,7 +148,7 @@ export function LandingPage() {
             </div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=900"
+                src="https://images.pexels.com/photos/30002090/pexels-photo-30002090.jpeg?auto=compress&cs=tinysrgb&w=900"
                 alt="Viajeros en ruta"
                 className="rounded-2xl shadow-xl w-full h-80 object-cover"
               />

@@ -68,6 +68,7 @@ export interface BlogPost {
   content: string
   image_url: string
   is_published: boolean
+  author_id: string | null
   created_at: string
 }
 

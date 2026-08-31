@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Plus, Loader as Loader2, Trash2, X, Save, FileText, CreditCard as Edit } from 'lucide-react'
+import { Plus, Loader as Loader2, Trash2, X, Save, FileText, CreditCard as Edit, Lock } from 'lucide-react'
 import { supabase, BlogPost } from '../../lib/supabase'
 import { RichTextEditor } from '../RichTextEditor'
+import { useAuth } from '../../context/AuthContext'
 
 export function AdminBlog() {
+  const { profile } = useAuth()
+  const isAdmin = profile?.role === 'admin' && profile?.status === 'aprobado'
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -36,10 +39,13 @@ export function AdminBlog() {
   const openNew = () => { resetForm(); setShowForm(true) }
 
   const openEdit = (post: BlogPost) => {
+    if (!isAdmin && post.author_id && post.author_id !== profile?.id) return
     setEditingPost(post)
     setForm({ title: post.title, excerpt: post.excerpt, content: post.content, image_url: post.image_url, is_published: post.is_published })
     setShowForm(true)
   }
+
+  const canEdit = (post: BlogPost) => isAdmin || !post.author_id || post.author_id === profile?.id
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -108,12 +114,20 @@ export function AdminBlog() {
                 ) : (
                   <span className="px-2.5 py-1 rounded-full bg-sand-200 text-sand-700 text-xs font-medium">Borrador</span>
                 )}
-                <button onClick={() => openEdit(post)} className="flex items-center gap-1 px-3 py-2 rounded-lg bg-sand-100 text-sand-700 text-sm hover:bg-sand-200 transition-all">
-                  <Edit className="w-4 h-4" /> Editar
-                </button>
-                <button onClick={() => handleDelete(post.id)} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all">
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                {canEdit(post) ? (
+                  <>
+                    <button onClick={() => openEdit(post)} className="flex items-center gap-1 px-3 py-2 rounded-lg bg-sand-100 text-sand-700 text-sm hover:bg-sand-200 transition-all">
+                      <Edit className="w-4 h-4" /> Editar
+                    </button>
+                    <button onClick={() => handleDelete(post.id)} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                ) : (
+                  <span className="flex items-center gap-1 px-3 py-2 text-xs text-sand-400">
+                    <Lock className="w-3 h-3" /> Solo lectura
+                  </span>
+                )}
               </div>
             </div>
           ))}
