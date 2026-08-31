@@ -26,7 +26,7 @@ export function LandingPage() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1534938665420-4193effeabd4?auto=format&fit=crop&q=80&w=1920"
-            alt="Costa de Galicia"
+            alt="Ruta de viaje por carretera"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-sand-900/40 via-sand-900/30 to-sand-50/90" />
@@ -48,18 +48,19 @@ export function LandingPage() {
           </a>
         </div>
 
-        {/* Stats reales */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-8">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="grid grid-cols-2 gap-6 bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-xl">
-              <div className="text-center">
-                <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">{routes.length}</p>
-                <p className="text-xs md:text-sm text-sand-500 mt-1">rutas publicadas</p>
-              </div>
-              <div className="text-center">
-                <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">100%</p>
-                <p className="text-xs md:text-sm text-sand-500 mt-1">hechas por viajeros</p>
-              </div>
+      </section>
+
+      {/* Stats reales */}
+      <section className="bg-white py-12">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="text-center p-6 rounded-2xl bg-sand-50 border border-sand-100">
+              <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">{routes.length}</p>
+              <p className="text-xs md:text-sm text-sand-500 mt-1">rutas publicadas</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl bg-sand-50 border border-sand-100">
+              <p className="font-serif text-3xl md:text-4xl text-sand-900 font-bold">100%</p>
+              <p className="text-xs md:text-sm text-sand-500 mt-1">hechas por viajeros</p>
             </div>
           </div>
         </div>
@@ -69,7 +70,7 @@ export function LandingPage() {
       <section id="formato" className="py-24 bg-sand-50">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <p className="text-forest-600 text-sm uppercase tracking-widest font-medium mb-2">routravel / field notes / 004</p>
+            <p className="text-forest-600 text-sm uppercase tracking-widest font-medium mb-2">Como funciona</p>
             <h2 className="font-serif text-4xl md:text-5xl text-sand-900 mb-4">El formato</h2>
             <p className="font-serif text-2xl text-sand-700">Del mapa a tu bolsillo.</p>
           </div>
