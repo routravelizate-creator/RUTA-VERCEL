@@ -12,3 +12,12 @@ verify_jwt = false
 
 [functions.reset-admin-pass]
 verify_jwt = false
+
+[functions.generate-pdf]
+verify_jwt = true
+
+[functions.generate-gpx]
+verify_jwt = true
+
+[functions.send-email]
+verify_jwt = true

@@ -250,6 +250,14 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
                   Publicar una ruta
                 </button>
               )}
+              {profile.role === 'routraveler' && (
+                <button
+                  onClick={() => { onClose(); navigate('/mis-ganancias') }}
+                  className="w-full btn-secondary text-sm mb-2"
+                >
+                  Mis ganancias
+                </button>
+              )}
             </>
           )}
 

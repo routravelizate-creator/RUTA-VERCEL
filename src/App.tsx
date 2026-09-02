@@ -12,6 +12,7 @@ import { BlogPage } from './pages/BlogPage'
 import { BlogPostPage } from './pages/BlogPostPage'
 import { GuideVerificationPage } from './pages/GuideVerificationPage'
 import { UserProfilePage } from './pages/UserProfilePage'
+import { EarningsPage } from './pages/EarningsPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -55,6 +56,9 @@ export default function App() {
         } />
         <Route path="/usuario/:id" element={
           <PublicLayout><UserProfilePage /></PublicLayout>
+        } />
+        <Route path="/mis-ganancias" element={
+          <PublicLayout><EarningsPage /></PublicLayout>
         } />
       </Routes>
     </AuthProvider>

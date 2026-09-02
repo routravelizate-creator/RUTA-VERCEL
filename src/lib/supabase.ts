@@ -57,6 +57,8 @@ export interface Purchase {
   payment_status: string
   stripe_session_id: string | null
   stripe_payment_intent: string | null
+  platform_commission: number
+  author_earnings: number
   created_at: string
   route?: Route
 }
@@ -101,5 +103,16 @@ export interface Notification {
   title: string
   message: string
   is_read: boolean
+  created_at: string
+}
+
+export interface Waypoint {
+  id: string
+  route_id: string
+  name: string
+  description: string
+  lat: number | null
+  lng: number | null
+  ord: number
   created_at: string
 }
