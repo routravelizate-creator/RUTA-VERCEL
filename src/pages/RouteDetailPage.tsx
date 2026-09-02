@@ -219,7 +219,7 @@ export function RouteDetailPage() {
 
             {waypoints.length > 0 && (
               <div className="mt-8">
-                <h3 className="font-serif text-xl text-sand-900 mb-4">Puntos de interes ({waypoints.length})</h3>
+                <h3 className="font-serif text-xl text-sand-900 mb-4">Puntos de interés ({waypoints.length})</h3>
                 <div className="space-y-3">
                   {waypoints.map((wp, i) => (
                     <div key={wp.id} className="flex gap-3 p-4 rounded-xl bg-sand-50 border border-sand-100">
@@ -323,7 +323,7 @@ export function RouteDetailPage() {
                     <p className="font-serif text-4xl text-sand-900 mb-1">
                       {route.price === 0 ? 'Gratis' : `${route.price}€`}
                     </p>
-                    <p className="text-sm text-sand-500 mb-6">Pago unico · Acceso permanente</p>
+                    <p className="text-sm text-sand-500 mb-6">Pago único · Acceso permanente</p>
 
                     {error && (
                       <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
@@ -343,7 +343,7 @@ export function RouteDetailPage() {
                           onClick={() => navigate('/ruta/' + id)}
                           className="w-full btn-secondary text-sm mb-3"
                         >
-                          <Lock className="w-4 h-4 inline mr-1" /> O inicia sesion
+                          <Lock className="w-4 h-4 inline mr-1" /> O inicia sesión
                         </button>
                       </>
                     )}

@@ -158,7 +158,7 @@ export function AdminBlog() {
                 <RichTextEditor
                   value={form.content}
                   onChange={val => setForm({ ...form, content: val })}
-                  placeholder="Escribe el articulo de viaje..."
+                  placeholder="Escribe el artículo de viaje..."
                 />
               </div>
               <div>

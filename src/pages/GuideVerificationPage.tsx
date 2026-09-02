@@ -78,8 +78,8 @@ export function GuideVerificationPage() {
               <ShieldCheck className="w-6 h-6 text-forest-600" />
             </div>
             <div>
-              <h1 className="font-serif text-3xl text-sand-900">Verificación de guia</h1>
-              <p className="text-sand-600 text-sm">Solicita ser guia verificado en Routravel</p>
+              <h1 className="font-serif text-3xl text-sand-900">Verificación de guía</h1>
+              <p className="text-sand-600 text-sm">Solicita ser guía verificado en Routravel</p>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@ export function GuideVerificationPage() {
           <ul className="mt-3 space-y-1 text-sm text-forest-700">
             <li>• Alta de autónomo o empresa de viajes</li>
             <li>• Seguro de responsabilidad civil</li>
-            <li>• Título oficial de guia turístico (si aplica)</li>
+            <li>• Título oficial de guía turístico (si aplica)</li>
             <li>• Licencia o autorización de la comunidad autónoma</li>
           </ul>
           <p className="mt-3 text-sm text-forest-700">
@@ -125,7 +125,7 @@ export function GuideVerificationPage() {
               <option value="autonomo">Alta de autónomo</option>
               <option value="empresa">Empresa de viajes</option>
               <option value="seguro">Seguro de responsabilidad civil</option>
-              <option value="titulo">Título de guia turístico</option>
+              <option value="titulo">Título de guía turístico</option>
               <option value="licencia">Licencia autonómica</option>
               <option value="otros">Otros</option>
             </select>
@@ -133,7 +133,7 @@ export function GuideVerificationPage() {
 
           <div>
             <label className="text-sm font-medium text-sand-700 mb-1 block">Descripción (opcional)</label>
-            <textarea rows={3} value={form.doc_description} onChange={e => setForm({ ...form, doc_description: e.target.value })} className="input-field" placeholder="Cuéntanos brevemente sobre tu experiencia como guia..." />
+            <textarea rows={3} value={form.doc_description} onChange={e => setForm({ ...form, doc_description: e.target.value })} className="input-field" placeholder="Cuéntanos brevemente sobre tu experiencia como guía..." />
           </div>
 
           <div>

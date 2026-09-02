@@ -30,9 +30,9 @@ export function Footer() {
           <div>
             <h4 className="font-serif text-lg mb-4 text-sand-200">Legal</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/legal/terminos-y-condiciones" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><FileText className="w-3.5 h-3.5" /> Terminos y Condiciones</Link></li>
-              <li><Link to="/legal/politica-de-privacidad" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><Shield className="w-3.5 h-3.5" /> Politica de Privacidad</Link></li>
-              <li><Link to="/legal/politica-de-cookies" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><Cookie className="w-3.5 h-3.5" /> Politica de Cookies</Link></li>
+              <li><Link to="/legal/terminos-y-condiciones" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><FileText className="w-3.5 h-3.5" /> Términos y Condiciones</Link></li>
+              <li><Link to="/legal/politica-de-privacidad" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><Shield className="w-3.5 h-3.5" /> Política de Privacidad</Link></li>
+              <li><Link to="/legal/politica-de-cookies" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><Cookie className="w-3.5 h-3.5" /> Política de Cookies</Link></li>
               <li><Link to="/legal/condiciones-de-compra" className="text-sand-300 hover:text-white transition-colors flex items-center gap-2"><CreditCard className="w-3.5 h-3.5" /> Condiciones de Compra</Link></li>
             </ul>
           </div>
@@ -52,7 +52,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-sand-800 text-center text-sm text-sand-400">
           <p>(c) {new Date().getFullYear()} Routravel. Mapas reales, hechos por gente que viaja dos veces.</p>
-          <p className="mt-2 text-xs text-sand-500">Pagos seguros procesados por Stripe. Plataforma protegida con verificacion CAPTCHA.</p>
+          <p className="mt-2 text-xs text-sand-500">Pagos seguros procesados por Stripe. Plataforma protegida con verificación CAPTCHA.</p>
         </div>
       </div>
     </footer>

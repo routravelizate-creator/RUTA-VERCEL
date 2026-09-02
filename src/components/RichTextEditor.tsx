@@ -53,7 +53,7 @@ export function RichTextEditor({ value, onChange, placeholder }: Props) {
   }
 
   const tools = [
-    { icon: Heading2, action: () => insertLine('## '), title: 'Titulo de seccion' },
+    { icon: Heading2, action: () => insertLine('## '), title: 'Título de sección' },
     { icon: Bold, action: () => wrapSelection('**'), title: 'Negrita' },
     { icon: List, action: () => insertLine('- '), title: 'Lista' },
     { icon: ListOrdered, action: () => insertLine('1. '), title: 'Lista numerada' },
@@ -106,12 +106,12 @@ export function RichTextEditor({ value, onChange, placeholder }: Props) {
           value={value}
           onChange={e => onChange(e.target.value)}
           className="input-field font-mono text-sm"
-          placeholder={placeholder || 'Escribe el contenido del articulo...'}
+          placeholder={placeholder || 'Escribe el contenido del artículo...'}
         />
       )}
 
       <p className="text-xs text-sand-400 mt-2">
-        Usa los botones de arriba para dar formato. Tambien puedes escribir manualmente: **negrita**, ## titulo, - lista, {'>'} cita, [texto](url).
+        Usa los botones de arriba para dar formato. También puedes escribir manualmente: **negrita**, ## título, - lista, {'>'} cita, [texto](url).
       </p>
     </div>
   )

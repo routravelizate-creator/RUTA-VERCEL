@@ -8,51 +8,51 @@ const LEGAL_PAGES: Record<string, {
   content: string
 }> = {
   'terminos-y-condiciones': {
-    title: 'Terminos y Condiciones',
+    title: 'Términos y Condiciones',
     icon: FileText,
     updated: '1 de septiembre de 2026',
-    content: `## 1. Aceptacion de los terminos
+    content: `## 1. Aceptación de los términos
 
-Al acceder y utilizar Routravel, aceptas los presentes Terminos y Condiciones de uso. Si no estas de acuerdo con alguno de ellos, te rogamos que no utilices la plataforma.
+Al acceder y utilizar Routravel, aceptas los presentes Términos y Condiciones de uso. Si no estás de acuerdo con alguno de ellos, te rogamos que no utilices la plataforma.
 
-## 2. Descripcion del servicio
+## 2. Descripción del servicio
 
-Routravel es una plataforma digital que conecta a creadores de rutas turisticas (routravelers) con viajeros. Los creadores publican rutas guiadas con archivos descargables (GPX, PDF, mapas) y los viajeros pueden comprarlas mediante pago unico a traves de Stripe.
+Routravel es una plataforma digital que conecta a creadores de rutas turísticas (routravelers) con viajeros. Los creadores publican rutas guiadas con archivos descargables (GPX, PDF, mapas) y los viajeros pueden comprarlas mediante pago único a través de Stripe.
 
 ## 3. Registro de usuario
 
-Para comprar rutas, debes crear una cuenta con un email valido y una contrasena. Eres responsable de mantener la confidencialidad de tus credenciales. Routravel no se hace responsable del uso no autorizado de tu cuenta.
+Para comprar rutas, debes crear una cuenta con un email válido y una contraseña. Eres responsable de mantener la confidencialidad de tus credenciales. Routravel no se hace responsable del uso no autorizado de tu cuenta.
 
 ## 4. Compra de rutas
 
-Las rutas se compran mediante pago unico a traves de Stripe. Una vez confirmado el pago, tienes acceso permanente a los archivos de la ruta (GPX, PDF y mapa). No se realizan cargos recurrentes.
+Las rutas se compran mediante pago único a través de Stripe. Una vez confirmado el pago, tienes acceso permanente a los archivos de la ruta (GPX, PDF y mapa). No se realizan cargos recurrentes.
 
-## 5. Politica de reembolsos
+## 5. Política de reembolsos
 
-Dado que las rutas son productos digitales descargables, **no se admiten devoluciones** una vez se ha confirmado el pago y se ha accedido a los archivos. Si experimentas un problema tecnico que impide la descarga, contactanos para resolverlo.
+Dado que las rutas son productos digitales descargables, **no se admiten devoluciones** una vez se ha confirmado el pago y se ha accedido a los archivos. Si experimentas un problema técnico que impide la descarga, contáctanos para resolverlo.
 
 ## 6. Propiedad intelectual
 
-Las rutas publicadas en Routravel son propiedad de sus creadores. Los archivos descargables (GPX, PDF, mapas) son para uso personal del comprador. Queda prohibida la redistribucion, venta o publicacion de los contenidos sin autorizacion del creador.
+Las rutas publicadas en Routravel son propiedad de sus creadores. Los archivos descargables (GPX, PDF, mapas) son para uso personal del comprador. Queda prohibida la redistribución, venta o publicación de los contenidos sin autorización del creador.
 
 ## 7. Responsabilidad del creador
 
-Los creadores de rutas son responsables de la precision de la informacion, la seguridad de las rutas y la actualizacion de los archivos. Routravel actua como intermediario y no se hace responsable del contenido de las rutas.
+Los creadores de rutas son responsables de la precisión de la información, la seguridad de las rutas y la actualización de los archivos. Routravel actúa como intermediario y no se hace responsable del contenido de las rutas.
 
 ## 8. Comisiones
 
-Routravel retiene una comision del 20% sobre cada venta. El 80% restante corresponde al creador de la ruta. Estas cantidades se calculan automaticamente en cada compra.
+Routravel retiene una comisión del 20% sobre cada venta. El 80% restante corresponde al creador de la ruta. Estas cantidades se calculan automáticamente en cada compra.
 
 ## 9. Modificaciones
 
-Routravel se reserva el derecho de modificar estos terminos en cualquier momento. Las modificaciones seran efectivas desde su publicacion en esta pagina.
+Routravel se reserva el derecho de modificar estos términos en cualquier momento. Las modificaciones serán efectivas desde su publicación en esta página.
 
 ## 10. Ley aplicable
 
-Estos terminos se rigen por la legislacion espanola. Cualquier disputa se resolvera ante los tribunales competentes de Espana.`
+Estos términos se rigen por la legislación española. Cualquier disputa se resolverá ante los tribunales competentes de España.`
   },
   'politica-de-privacidad': {
-    title: 'Politica de Privacidad',
+    title: 'Política de Privacidad',
     icon: Shield,
     updated: '1 de septiembre de 2026',
     content: `## 1. Responsable del tratamiento
@@ -62,37 +62,37 @@ Routravel es responsable del tratamiento de tus datos personales. Puedes contact
 ## 2. Datos que recopilamos
 
 - **Datos de cuenta:** email, nombre, apellidos, fecha de nacimiento y foto de perfil.
-- **Datos de compra:** historial de rutas compradas, email de pago y estado de la transaccion.
-- **Datos de navegacion:** cookies y tecnologias similares (ver Politica de Cookies).
+- **Datos de compra:** historial de rutas compradas, email de pago y estado de la transacción.
+- **Datos de navegación:** cookies y tecnologías similares (ver Política de Cookies).
 - **Datos de creador:** rutas publicadas, ganancias y comisiones.
 
 ## 3. Finalidad del tratamiento
 
-- Gestionar tu cuenta de usuario y autenticacion.
-- Procesar pagos a traves de Stripe (que trata tus datos segun su propia politica).
+- Gestionar tu cuenta de usuario y autenticación.
+- Procesar pagos a través de Stripe (que trata tus datos según su propia política).
 - Enviarte notificaciones sobre compras y ventas.
 - Verificar la identidad de los creadores de rutas (routravelers).
 - Cumplir con obligaciones legales y fiscales.
 
 ## 4. Base legal
 
-- **Ejecucion de contrato:** para gestionar tu cuenta y procesar compras.
+- **Ejecución de contrato:** para gestionar tu cuenta y procesar compras.
 - **Consentimiento:** para enviar notificaciones y usar cookies no esenciales.
-- **Interes legitimo:** para garantizar la seguridad de la plataforma.
+- **Interés legítimo:** para garantizar la seguridad de la plataforma.
 
-## 5. Conservacion de datos
+## 5. Conservación de datos
 
-Tus datos se conservaran mientras mantengas una cuenta activa. Los datos de transacciones se conservaran durante el periodo legal obligatorio (hasta 6 anos).
+Tus datos se conservarán mientras mantengas una cuenta activa. Los datos de transacciones se conservarán durante el período legal obligatorio (hasta 6 años).
 
 ## 6. Derechos del usuario
 
 Puedes ejercer en cualquier momento tus derechos de:
 - Acceso a tus datos personales.
-- Rectificacion de datos inexactos.
-- Supresion de tus datos ("derecho al olvido").
-- Limitacion del tratamiento.
+- Rectificación de datos inexactos.
+- Supresión de tus datos ("derecho al olvido").
+- Limitación del tratamiento.
 - Portabilidad de datos.
-- Oposicion al tratamiento.
+- Oposición al tratamiento.
 
 Para ejercer estos derechos, contacta con nosotros.
 
@@ -101,50 +101,50 @@ Para ejercer estos derechos, contacta con nosotros.
 Tus datos pueden ser tratados por:
 - **Stripe:** procesador de pagos.
 - **Supabase:** proveedor de infraestructura de base de datos.
-- **Proveedores de email:** para el envio de notificaciones.
+- **Proveedores de email:** para el envío de notificaciones.
 
-Ninguno de estos proveedores utilizara tus datos para fines propios.
+Ninguno de estos proveedores utilizará tus datos para fines propios.
 
 ## 8. Seguridad
 
-Implementamos medidas tecnicas y organizativas para proteger tus datos, incluyendo cifrado, control de acceso y verificacion de firmas en transacciones. La plataforma cuenta con verificacion CAPTCHA para prevenir accesos automatizados.
+Implementamos medidas técnicas y organizativas para proteger tus datos, incluyendo cifrado, control de acceso y verificación de firmas en transacciones. La plataforma cuenta con verificación CAPTCHA para prevenir accesos automatizados.
 
 ## 9. Transferencias internacionales
 
-Algunos de nuestros proveedores pueden tratar datos en paises fuera de la UE. En dichos casos, se aplican las garantias adecuadas segun el RGPD.`
+Algunos de nuestros proveedores pueden tratar datos en países fuera de la UE. En dichos casos, se aplican las garantías adecuadas según el RGPD.`
   },
   'politica-de-cookies': {
-    title: 'Politica de Cookies',
+    title: 'Política de Cookies',
     icon: Cookie,
     updated: '1 de septiembre de 2026',
-    content: `## 1. Que son las cookies?
+    content: `## 1. ¿Qué son las cookies?
 
-Las cookies son pequenos archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Permiten recordar tu sesion, preferencias y estadisticas de uso.
+Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Permiten recordar tu sesión, preferencias y estadísticas de uso.
 
 ## 2. Cookies que utilizamos
 
-### Cookies tecnicas (necesarias)
-- **Sesion de autenticacion:** necesaria para mantener tu sesion iniciada.
-- **Token CSRF:** protege formularios contra ataques de falsificacion de peticion.
+### Cookies técnicas (necesarias)
+- **Sesión de autenticación:** necesaria para mantener tu sesión iniciada.
+- **Token CSRF:** protege formularios contra ataques de falsificación de petición.
 
-### Cookies analiticas (opcionales)
-- Estadisticas de visita y comportamiento de navegacion.
+### Cookies analíticas (opcionales)
+- Estadísticas de visita y comportamiento de navegación.
 
 ### Cookies de terceros
 - **Stripe:** cookies relacionadas con el procesamiento de pagos.
 - **Google Maps:** si visualizas mapas integrados en las rutas.
 
-## 3. Gestion de cookies
+## 3. Gestión de cookies
 
-Puedes configurar tu navegador para aceptar, bloquear o eliminar cookies. Ten en cuenta que bloquear cookies tecnicas puede impedir el uso de la plataforma (inicio de sesion, compras).
+Puedes configurar tu navegador para aceptar, bloquear o eliminar cookies. Ten en cuenta que bloquear cookies técnicas puede impedir el uso de la plataforma (inicio de sesión, compras).
 
-## 4. Conservacion
+## 4. Conservación
 
-Las cookies de sesion se eliminan al cerrar el navegador. Las cookies persistentes tienen una duracion maxima de 12 meses.
+Las cookies de sesión se eliminan al cerrar el navegador. Las cookies persistentes tienen una duración máxima de 12 meses.
 
-## 5. Actualizacion
+## 5. Actualización
 
-Esta politica puede actualizarse en cualquier momento. Los cambios seran efectivos desde su publicacion.`
+Esta política puede actualizarse en cualquier momento. Los cambios serán efectivos desde su publicación.`
   },
   'condiciones-de-compra': {
     title: 'Condiciones de Compra',
@@ -153,41 +153,41 @@ Esta politica puede actualizarse en cualquier momento. Los cambios seran efectiv
     content: `## 1. Proceso de compra
 
 1. Selecciona la ruta que deseas adquirir.
-2. Inicia sesion o compra como invitado proporcionando tu email.
-3. Seras redirigido a la pasarela de pago de Stripe.
-4. Una vez confirmado el pago, tendras acceso inmediato a los archivos descargables (GPX, PDF y mapa).
+2. Inicia sesión o compra como invitado proporcionando tu email.
+3. Serás redirigido a la pasarela de pago de Stripe.
+4. Una vez confirmado el pago, tendrás acceso inmediato a los archivos descargables (GPX, PDF y mapa).
 
-## 2. Metodos de pago
+## 2. Métodos de pago
 
-Aceptamos pagos con tarjeta de credito y debito a traves de Stripe. Stripe procesa el pago de forma segura y Routravel no almacena los datos de tu tarjeta.
+Aceptamos pagos con tarjeta de crédito y débito a través de Stripe. Stripe procesa el pago de forma segura y Routravel no almacena los datos de tu tarjeta.
 
-## 3. Confirmacion de compra
+## 3. Confirmación de compra
 
-Recibiras una notificacion por email y en la plataforma cuando el pago se confirme. Si no recibes la confirmacion en unos minutos, contactanos.
+Recibirás una notificación por email y en la plataforma cuando el pago se confirme. Si no recibes la confirmación en unos minutos, contáctanos.
 
 ## 4. Acceso a los archivos
 
-El acceso a los archivos descargables es permanente. Puedes descargarlos las veces que necesites desde tu cuenta en "Mis rutas" o desde la pagina de la ruta.
+El acceso a los archivos descargables es permanente. Puedes descargarlos las veces que necesites desde tu cuenta en "Mis rutas" o desde la página de la ruta.
 
 ## 5. Productos digitales
 
-Las rutas son productos digitales. Por su naturaleza, **no admiten devolucion ni cambio** una vez se ha confirmado el pago y se ha accedido a los archivos.
+Las rutas son productos digitales. Por su naturaleza, **no admiten devolución ni cambio** una vez se ha confirmado el pago y se ha accedido a los archivos.
 
 ## 6. Soporte
 
-Si tienes problemas tecnicos con la descarga o apertura de archivos, contactanos. Te ayudaremos a resolver cualquier incidencia.
+Si tienes problemas técnicos con la descarga o apertura de archivos, contáctanos. Te ayudaremos a resolver cualquier incidencia.
 
 ## 7. Precios
 
-Los precios de las rutas los establece cada creador. Routravel anade una comision del 20% sobre el precio. El precio mostrado en la plataforma es el precio final que pagas.
+Los precios de las rutas los establece cada creador. Routravel añade una comisión del 20% sobre el precio. El precio mostrado en la plataforma es el precio final que pagas.
 
 ## 8. Divisa
 
 Todos los precios se muestran en euros (EUR). Si tu tarjeta usa otra divisa, el banco puede aplicar comisiones de cambio.
 
-## 9. Proteccion de datos
+## 9. Protección de datos
 
-Tus datos de pago son tratados exclusivamente por Stripe. Routravel solo recibe confirmacion del pago y no tiene acceso a los datos de tu tarjeta.`
+Tus datos de pago son tratados exclusivamente por Stripe. Routravel solo recibe confirmación del pago y no tiene acceso a los datos de tu tarjeta.`
   },
 }
 
@@ -200,7 +200,7 @@ export function LegalPage() {
       <div className="min-h-screen pt-28 pb-20 bg-sand-50">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <FileText className="w-12 h-12 text-sand-300 mx-auto mb-4" />
-          <h1 className="font-serif text-2xl text-sand-900 mb-2">Pagina no encontrada</h1>
+          <h1 className="font-serif text-2xl text-sand-900 mb-2">Página no encontrada</h1>
           <p className="text-sand-600 mb-4">El documento legal que buscas no existe.</p>
           <Link to="/" className="btn-primary">Volver al inicio</Link>
         </div>
@@ -223,7 +223,7 @@ export function LegalPage() {
           </div>
           <div>
             <h1 className="font-serif text-3xl text-sand-900">{page.title}</h1>
-            <p className="text-sm text-sand-500">Ultima actualizacion: {page.updated}</p>
+            <p className="text-sm text-sand-500">Última actualización: {page.updated}</p>
           </div>
         </div>
 
@@ -250,3 +250,6 @@ export function LegalPage() {
     </div>
   )
 }
+
+
+export { LegalPage }

@@ -92,7 +92,7 @@ export function PublishRoutePage() {
     }).select('id').single()
 
     if (insertError || !routeData) {
-      setError('No se pudo publicar la ruta. Intentalo de nuevo.')
+      setError('No se pudo publicar la ruta. Inténtalo de nuevo.')
       setSaving(false)
       return
     }
@@ -138,7 +138,7 @@ export function PublishRoutePage() {
             <MapPin className="w-8 h-8 text-forest-600" />
           </div>
           <h2 className="font-serif text-2xl text-sand-900 mb-2">Ruta publicada</h2>
-          <p className="text-sand-600">Tu ruta se ha creado correctamente. Te redirigimos a la pagina de la ruta...</p>
+          <p className="text-sand-600">Tu ruta se ha creado correctamente. Te redirigimos a la página de la ruta...</p>
         </div>
       </div>
     )
@@ -162,18 +162,18 @@ export function PublishRoutePage() {
 
         <form onSubmit={handleSave} className="card p-6 space-y-4">
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Titulo *</label>
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Título *</label>
             <input required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="input-field" placeholder="7 dias por la costa de Galicia" />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Subtitulo / Ruta *</label>
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Subtítulo / Ruta *</label>
             <input required value={form.subtitle} onChange={e => setForm({ ...form, subtitle: e.target.value })} className="input-field" placeholder="Vigo - Costa da Morte" />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Descripcion *</label>
-            <textarea required rows={5} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="input-field" placeholder="Describe la ruta, los puntos de interes, duracion, dificultad..." />
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Descripción *</label>
+            <textarea required rows={5} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="input-field" placeholder="Describe la ruta, los puntos de interés, duración, dificultad..." />
           </div>
 
           <div>
@@ -186,17 +186,17 @@ export function PublishRoutePage() {
             <input type="number" min="0" step="0.01" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} className="input-field" />
           </div>
 
-          {/* Puntos de interes */}
+          {/* Puntos de interés */}
           <div className="border-t border-sand-200 pt-4 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-sand-700 flex items-center gap-2">
-                <MapPin className="w-4 h-4" /> Puntos de interes
+                <MapPin className="w-4 h-4" /> Puntos de interés
               </p>
               <button type="button" onClick={addWaypoint} className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-forest-50 text-forest-700 text-xs font-medium hover:bg-forest-100 transition-all">
-                <Plus className="w-3 h-3" /> Anadir punto
+                <Plus className="w-3 h-3" /> Añadir punto
               </button>
             </div>
-            <p className="text-xs text-sand-500">Anade los puntos de interes de tu ruta. Si no subes un GPX manual, se generara uno automaticamente a partir de estos puntos. Tambien se usaran para crear el PDF del itinerario.</p>
+            <p className="text-xs text-sand-500">Añade los puntos de interés de tu ruta. Si no subes un GPX manual, se generará uno automáticamente a partir de estos puntos. También se usarán para crear el PDF del itinerario.</p>
 
             {waypoints.map((wp, i) => (
               <div key={i} className="p-4 rounded-xl bg-sand-50 border border-sand-200 space-y-3">
@@ -213,19 +213,19 @@ export function PublishRoutePage() {
                   <input value={wp.name} onChange={e => updateWaypoint(i, 'name', e.target.value)} className="input-field text-sm" placeholder="Nombre del punto (ej. Faro de Fisterra)" />
                 </div>
                 <div>
-                  <textarea value={wp.description} onChange={e => updateWaypoint(i, 'description', e.target.value)} rows={2} className="input-field text-sm" placeholder="Descripcion breve (horarios, observaciones, que ver...)" />
+                  <textarea value={wp.description} onChange={e => updateWaypoint(i, 'description', e.target.value)} rows={2} className="input-field text-sm" placeholder="Descripción breve (horarios, observaciones, qué ver...)" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <input value={wp.lat} onChange={e => updateWaypoint(i, 'lat', e.target.value)} className="input-field text-sm font-mono" placeholder="Latitud (ej. 42.897)" />
                   <input value={wp.lng} onChange={e => updateWaypoint(i, 'lng', e.target.value)} className="input-field text-sm font-mono" placeholder="Longitud (ej. -9.265)" />
                 </div>
-                <p className="text-xs text-sand-400">Puedes obtener las coordenadas de Google Maps (boton derecho &gt; "Que hay aqui" &gt; copiar coordenadas).</p>
+                <p className="text-xs text-sand-400">Puedes obtener las coordenadas de Google Maps (botón derecho &gt; "Qué hay aquí" &gt; copiar coordenadas).</p>
               </div>
             ))}
 
             {waypoints.length === 0 && (
               <div className="text-center py-6 text-sand-400 text-sm">
-                No hay puntos de interes. Anadelos para que se genere el GPX y el PDF automaticamente.
+                No hay puntos de interés. Añádelos para que se genere el GPX y el PDF automáticamente.
               </div>
             )}
           </div>
@@ -233,7 +233,7 @@ export function PublishRoutePage() {
           {/* Archivos descargables */}
           <div className="border-t border-sand-200 pt-4 space-y-4">
             <p className="text-sm font-medium text-sand-700 flex items-center gap-2"><Upload className="w-4 h-4" /> Archivos descargables</p>
-            <p className="text-xs text-sand-500">Si no subes un GPX ni un PDF, se generaran automaticamente a partir de los puntos de interes.</p>
+            <p className="text-xs text-sand-500">Si no subes un GPX ni un PDF, se generarán automáticamente a partir de los puntos de interés.</p>
 
             {/* GPX upload */}
             <div>
@@ -251,7 +251,7 @@ export function PublishRoutePage() {
 
             <div>
               <label className="text-xs text-sand-500 mb-1 block flex items-center gap-1"><FileText className="w-3 h-3" /> URL del PDF (opcional)</label>
-              <input value={form.pdf_url} onChange={e => setForm({ ...form, pdf_url: e.target.value })} className="input-field" placeholder="https://...pdf (si no se pone, se genera automaticamente)" />
+              <input value={form.pdf_url} onChange={e => setForm({ ...form, pdf_url: e.target.value })} className="input-field" placeholder="https://...pdf (si no se pone, se genera automáticamente)" />
             </div>
             <div>
               <label className="text-xs text-sand-500 mb-1 block flex items-center gap-1"><Link2 className="w-3 h-3" /> URL de Google My Maps (embed)</label>

@@ -16,7 +16,7 @@ export function ResetPasswordPage() {
     // Supabase will set the session from the recovery link
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        setError('El enlace no es valido o ha caducado.')
+        setError('El enlace no es válido o ha caducado.')
       }
     })
   }, [])
@@ -26,11 +26,11 @@ export function ResetPasswordPage() {
     setError('')
 
     if (password.length < 6) {
-      setError('La contrasena debe tener al menos 6 caracteres.')
+      setError('La contraseña debe tener al menos 6 caracteres.')
       return
     }
     if (password !== confirmPassword) {
-      setError('Las contrasenas no coinciden.')
+      setError('Las contraseñas no coinciden.')
       return
     }
 
@@ -39,7 +39,7 @@ export function ResetPasswordPage() {
     const { error } = await supabase.auth.updateUser({ password })
 
     if (error) {
-      setError('No se pudo cambiar la contrasena. ' + error.message)
+      setError('No se pudo cambiar la contraseña. ' + error.message)
       setLoading(false)
       return
     }
@@ -56,8 +56,8 @@ export function ResetPasswordPage() {
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-forest-50 flex items-center justify-center">
             <CheckCircle className="w-8 h-8 text-forest-600" />
           </div>
-          <h2 className="font-serif text-2xl text-sand-900 mb-2">Contrasena cambiada</h2>
-          <p className="text-sand-600">Tu contrasena se ha actualizado correctamente. Te redirigimos a la pagina principal...</p>
+          <h2 className="font-serif text-2xl text-sand-900 mb-2">Contraseña cambiada</h2>
+          <p className="text-sand-600">Tu contraseña se ha actualizado correctamente. Te redirigimos a la página principal...</p>
         </div>
       </div>
     )
@@ -70,8 +70,8 @@ export function ResetPasswordPage() {
           <ArrowLeft className="w-4 h-4" /> Volver al inicio
         </button>
 
-        <h1 className="font-serif text-3xl text-sand-900 mb-2">Cambiar contrasena</h1>
-        <p className="text-sand-600 mb-8">Introduce tu nueva contrasena.</p>
+        <h1 className="font-serif text-3xl text-sand-900 mb-2">Cambiar contraseña</h1>
+        <p className="text-sand-600 mb-8">Introduce tu nueva contraseña.</p>
 
         {error && (
           <div className="mb-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
@@ -81,7 +81,7 @@ export function ResetPasswordPage() {
 
         <form onSubmit={handleChangePassword} className="card p-6 space-y-4">
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Nueva contrasena (min. 6 caracteres)</label>
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Nueva contraseña (mín. 6 caracteres)</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sand-400" />
               <input
@@ -97,7 +97,7 @@ export function ResetPasswordPage() {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Repetir contrasena</label>
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Repetir contraseña</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sand-400" />
               <input
@@ -113,7 +113,7 @@ export function ResetPasswordPage() {
           </div>
 
           <button type="submit" disabled={loading} className="w-full btn-primary flex items-center justify-center gap-2">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Cambiar contrasena'}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Cambiar contraseña'}
           </button>
         </form>
       </div>

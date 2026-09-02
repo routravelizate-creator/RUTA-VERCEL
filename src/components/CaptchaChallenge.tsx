@@ -100,7 +100,7 @@ export function CaptchaChallenge({ onPass }: CaptchaChallengeProps) {
     return (
       <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-forest-50 border border-forest-200 text-sm text-forest-700">
         <ShieldCheck className="w-5 h-5 text-forest-600" />
-        <span>Verificacion completada</span>
+        <span>Verificación completada</span>
       </div>
     )
   }
@@ -110,7 +110,7 @@ export function CaptchaChallenge({ onPass }: CaptchaChallengeProps) {
       <div className="bg-sand-50 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-sand-600" />
-          <span className="text-xs font-medium text-sand-700">Verificacion de seguridad</span>
+          <span className="text-xs font-medium text-sand-700">Verificación de seguridad</span>
         </div>
         <button
           type="button"
@@ -145,7 +145,7 @@ export function CaptchaChallenge({ onPass }: CaptchaChallengeProps) {
         </div>
 
         {error && (
-          <p className="text-xs text-red-600 mt-2">Seleccion incorrecta. Intentalo de nuevo.</p>
+          <p className="text-xs text-red-600 mt-2">Selección incorrecta. Inténtalo de nuevo.</p>
         )}
 
         <button
