@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { X, Mail, Lock, User, Loader as Loader2, CircleCheck as CheckCircle, Clock, Circle as XCircle, Bell, MapPin, Star, Calendar, Camera } from 'lucide-react'
+import { X, Mail, Lock, User, Loader as Loader2, CircleCheck as CheckCircle, Clock, Circle as XCircle, Bell, MapPin, Star, Calendar, Camera, ShieldCheck, RefreshCw } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { useEffect } from 'react'
+import { CaptchaChallenge } from './CaptchaChallenge'
 
 interface AccountModalProps {
   onClose: () => void
@@ -11,7 +12,7 @@ interface AccountModalProps {
 }
 
 export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
-  const [mode, setMode] = useState<'login' | 'register' | 'success'>('login')
+  const [mode, setMode] = useState<'login' | 'register' | 'success' | 'forgot'>('login')
   const [email, setEmail] = useState('')
   const [emailConfirm, setEmailConfirm] = useState('')
   const [password, setPassword] = useState('')
@@ -22,9 +23,12 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
   const [avatarUrl, setAvatarUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [info, setInfo] = useState('')
   const [showNotifications, setShowNotifications] = useState(false)
   const [notifications, setNotifications] = useState<any[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
+  const [captchaPassed, setCaptchaPassed] = useState(false)
+  const [captchaKey, setCaptchaKey] = useState(0)
   const { profile, refreshProfile } = useAuth()
   const navigate = useNavigate()
 
@@ -52,13 +56,17 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!captchaPassed) {
+      setError('Por favor, completa la verificacion de seguridad.')
+      return
+    }
     setLoading(true)
     setError('')
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      setError('Email o contraseña incorrectos.')
+      setError('Email o contrasena incorrectos.')
       setLoading(false)
       return
     }
@@ -70,7 +78,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
       .maybeSingle()
 
     if (profileData?.status === 'pendiente') {
-      setError('Tu cuenta está pendiente de aprobación por el administrador.')
+      setError('Tu cuenta esta pendiente de aprobacion por el administrador.')
       await supabase.auth.signOut()
       setLoading(false)
       return
@@ -98,16 +106,21 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
     e.preventDefault()
     setError('')
 
+    if (!captchaPassed) {
+      setError('Por favor, completa la verificacion de seguridad.')
+      return
+    }
+
     if (email !== emailConfirm) {
       setError('Los emails no coinciden.')
       return
     }
     if (password !== passwordConfirm) {
-      setError('Las contraseñas no coinciden.')
+      setError('Las contrasenas no coinciden.')
       return
     }
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.')
+      setError('La contrasena debe tener al menos 6 caracteres.')
       return
     }
     if (!firstName.trim()) {
@@ -132,7 +145,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
 
     if (error) {
       setError(error.message === 'User already registered'
-        ? 'Este email ya está registrado.'
+        ? 'Este email ya esta registrado.'
         : error.message)
       setLoading(false)
       return
@@ -141,6 +154,29 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
     if (data.user) {
       setMode('success')
     }
+    setLoading(false)
+  }
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) {
+      setError('Introduce tu email.')
+      return
+    }
+    setLoading(true)
+    setError('')
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/recuperar-contrasena`,
+    })
+
+    if (error) {
+      setError('No se pudo enviar el email de recuperacion.')
+      setLoading(false)
+      return
+    }
+
+    setInfo('Te hemos enviado un enlace para cambiar tu contrasena. Revisa tu email.')
     setLoading(false)
   }
 
@@ -171,12 +207,11 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             </button>
           </div>
 
-          {/* Valoración del usuario */}
           {profile.rating_count > 0 && (
             <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200">
               <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
               <span className="text-sm font-medium text-amber-700">
-                {Number(profile.rating_avg).toFixed(1)} ({profile.rating_count} reseñas)
+                {Number(profile.rating_avg).toFixed(1)} ({profile.rating_count} resenas)
               </span>
             </div>
           )}
@@ -193,12 +228,11 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             {profile.status === 'rechazado' && <XCircle className="w-5 h-5 flex-shrink-0" />}
             <span className="text-sm font-medium">
               {profile.status === 'aprobado' && 'Cuenta aprobada'}
-              {profile.status === 'pendiente' && 'Pendiente de aprobación'}
+              {profile.status === 'pendiente' && 'Pendiente de aprobacion'}
               {profile.status === 'rechazado' && 'Cuenta rechazada'}
             </span>
           </div>
 
-          {/* Notificaciones */}
           <button
             onClick={() => { setShowNotifications(!showNotifications); if (!showNotifications) markAllRead() }}
             className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-sand-50 hover:bg-sand-100 transition-colors mb-3"
@@ -265,7 +299,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             onClick={onSignOut}
             className="w-full btn-secondary text-sm"
           >
-            Cerrar sesión
+            Cerrar sesion
           </button>
         </div>
       </div>
@@ -283,13 +317,70 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-forest-50 flex items-center justify-center">
             <CheckCircle className="w-8 h-8 text-forest-600" />
           </div>
-          <h3 className="font-serif text-xl text-sand-900 mb-2">¡Cuenta creada!</h3>
+          <h3 className="font-serif text-xl text-sand-900 mb-2">Cuenta creada!</h3>
           <p className="text-sm text-sand-600 leading-relaxed">
-            Tu cuenta ya está activa. Ya puedes explorar y comprar rutas. ¡Bienvenido a Routravel!
+            Tu cuenta ya esta activa. Ya puedes explorar y comprar rutas. Bienvenido a Routravel!
           </p>
           <button onClick={onClose} className="mt-5 w-full btn-primary text-sm">
             Empezar a explorar
           </button>
+        </div>
+      </div>
+    )
+  }
+
+  // --- Recuperar contrasena ---
+  if (mode === 'forgot') {
+    return (
+      <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-sand-200 overflow-hidden animate-slide-down z-50">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-serif text-xl text-sand-900">Recuperar contrasena</h3>
+            <button onClick={onClose} className="text-sand-400 hover:text-sand-600">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {error && (
+            <div className="mb-3 px-4 py-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+              {error}
+            </div>
+          )}
+          {info && (
+            <div className="mb-3 px-4 py-2.5 rounded-lg bg-forest-50 border border-forest-200 text-forest-700 text-sm">
+              {info}
+            </div>
+          )}
+
+          <form onSubmit={handleForgotPassword} className="space-y-3">
+            <p className="text-sm text-sand-600">Introduce tu email y te enviaremos un enlace para cambiar tu contrasena.</p>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sand-400" />
+              <input
+                type="email"
+                required
+                placeholder="tu@email.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="input-field pl-10 text-sm"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full btn-primary text-sm flex items-center justify-center gap-2"
+            >
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+              Enviar enlace
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode('login'); setError(''); setInfo('') }}
+              className="w-full text-center text-sm text-forest-600 font-medium hover:underline"
+            >
+              Volver a iniciar sesion
+            </button>
+          </form>
         </div>
       </div>
     )
@@ -301,7 +392,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
       <div className="p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-serif text-xl text-sand-900">
-            {mode === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}
+            {mode === 'login' ? 'Iniciar sesion' : 'Crear cuenta'}
           </h3>
           <button onClick={onClose} className="text-sand-400 hover:text-sand-600">
             <X className="w-5 h-5" />
@@ -332,12 +423,15 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
               <input
                 type="password"
                 required
-                placeholder="Contraseña"
+                placeholder="Contrasena"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="input-field pl-10 text-sm"
               />
             </div>
+
+            <CaptchaChallenge key={captchaKey} onPass={() => setCaptchaPassed(true)} />
+
             <button
               type="submit"
               disabled={loading}
@@ -346,14 +440,21 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               Entrar
             </button>
+            <button
+              type="button"
+              onClick={() => { setMode('forgot'); setError('') }}
+              className="w-full text-center text-sm text-forest-600 font-medium hover:underline"
+            >
+              Olvidaste tu contrasena?
+            </button>
             <p className="text-center text-sm text-sand-600 pt-1">
-              ¿No tienes cuenta?{' '}
+              No tienes cuenta?{' '}
               <button
                 type="button"
-                onClick={() => { setMode('register'); setError('') }}
+                onClick={() => { setMode('register'); setError(''); setCaptchaPassed(false); setCaptchaKey(k => k + 1) }}
                 className="text-forest-600 font-medium hover:underline"
               >
-                Regístrate aquí
+                Registrate aqui
               </button>
             </p>
           </form>
@@ -365,7 +466,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
                 <input
                   type="text"
                   required
-                  placeholder="María"
+                  placeholder="Maria"
                   value={firstName}
                   onChange={e => setFirstName(e.target.value)}
                   className="input-field text-sm"
@@ -375,7 +476,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
                 <label className="text-xs text-sand-500 mb-1 block">Apellidos</label>
                 <input
                   type="text"
-                  placeholder="González López"
+                  placeholder="Gonzalez Lopez"
                   value={lastName}
                   onChange={e => setLastName(e.target.value)}
                   className="input-field text-sm"
@@ -435,14 +536,14 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             </div>
 
             <div>
-              <label className="text-xs text-sand-500 mb-1 block">Contraseña (mín. 6 caracteres) *</label>
+              <label className="text-xs text-sand-500 mb-1 block">Contrasena (min. 6 caracteres) *</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sand-400" />
                 <input
                   type="password"
                   required
                   minLength={6}
-                  placeholder="••••••••"
+                  placeholder="........"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   className="input-field pl-10 text-sm"
@@ -451,20 +552,22 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             </div>
 
             <div>
-              <label className="text-xs text-sand-500 mb-1 block">Repetir contraseña *</label>
+              <label className="text-xs text-sand-500 mb-1 block">Repetir contrasena *</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sand-400" />
                 <input
                   type="password"
                   required
                   minLength={6}
-                  placeholder="••••••••"
+                  placeholder="........"
                   value={passwordConfirm}
                   onChange={e => setPasswordConfirm(e.target.value)}
                   className="input-field pl-10 text-sm"
                 />
               </div>
             </div>
+
+            <CaptchaChallenge key={captchaKey} onPass={() => setCaptchaPassed(true)} />
 
             <button
               type="submit"
@@ -475,13 +578,13 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
               Crear cuenta
             </button>
             <p className="text-center text-sm text-sand-600 pt-1">
-              ¿Ya tienes cuenta?{' '}
+              Ya tienes cuenta?{' '}
               <button
                 type="button"
-                onClick={() => { setMode('login'); setError('') }}
+                onClick={() => { setMode('login'); setError(''); setCaptchaPassed(false); setCaptchaKey(k => k + 1) }}
                 className="text-forest-600 font-medium hover:underline"
               >
-                Inicia sesión
+                Inicia sesion
               </button>
             </p>
           </form>

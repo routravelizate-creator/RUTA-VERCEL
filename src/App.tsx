@@ -13,6 +13,8 @@ import { BlogPostPage } from './pages/BlogPostPage'
 import { GuideVerificationPage } from './pages/GuideVerificationPage'
 import { UserProfilePage } from './pages/UserProfilePage'
 import { EarningsPage } from './pages/EarningsPage'
+import { ResetPasswordPage } from './pages/ResetPasswordPage'
+import { LegalPage } from './pages/LegalPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -59,6 +61,12 @@ export default function App() {
         } />
         <Route path="/mis-ganancias" element={
           <PublicLayout><EarningsPage /></PublicLayout>
+        } />
+        <Route path="/recuperar-contrasena" element={
+          <PublicLayout><ResetPasswordPage /></PublicLayout>
+        } />
+        <Route path="/legal/:slug" element={
+          <PublicLayout><LegalPage /></PublicLayout>
         } />
       </Routes>
     </AuthProvider>
