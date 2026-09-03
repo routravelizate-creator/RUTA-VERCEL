@@ -106,7 +106,7 @@ export function EarningsPage() {
         <div className="card p-5 mb-8 bg-sand-50 border-sand-200">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-sand-600">Comision de la plataforma (20%)</p>
+              <p className="text-sm text-sand-600">Comisión de la plataforma (20%)</p>
               <p className="font-serif text-2xl text-sand-900">{totalPlatform.toFixed(2)}€</p>
             </div>
             <div className="text-right">
@@ -122,7 +122,7 @@ export function EarningsPage() {
         {sales.length === 0 ? (
           <div className="card p-12 text-center">
             <DollarSign className="w-10 h-10 text-sand-300 mx-auto mb-3" />
-            <p className="text-sand-500 mb-4">Todavia no has vendido ninguna ruta.</p>
+            <p className="text-sand-500 mb-4">Todavía no has vendido ninguna ruta.</p>
             <Link to="/publicar" className="inline-flex items-center gap-2 text-forest-600 font-medium hover:underline">
               Publicar una ruta <ArrowRight className="w-4 h-4" />
             </Link>
@@ -151,7 +151,7 @@ export function EarningsPage() {
                 </div>
                 <div className="text-right">
                   <p className="font-serif text-lg text-forest-700">+{Number(sale.author_earnings || 0).toFixed(2)}€</p>
-                  <p className="text-xs text-sand-400">Comision: {Number(sale.platform_commission || 0).toFixed(2)}€</p>
+                  <p className="text-xs text-sand-400">Comisión: {Number(sale.platform_commission || 0).toFixed(2)}€</p>
                 </div>
               </div>
             ))}
