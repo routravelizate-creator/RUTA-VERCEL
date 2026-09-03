@@ -250,6 +250,3 @@ export function LegalPage() {
     </div>
   )
 }
-
-
-export { LegalPage }

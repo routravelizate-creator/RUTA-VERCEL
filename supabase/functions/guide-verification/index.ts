@@ -6,6 +6,8 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
+const ADMIN_EMAIL = "abecasismelani@gmail.com";
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
@@ -48,20 +50,23 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // Send notification email to routravelizate@gmail.com via Resend
+    // Build notification email
+    const emailHtml = `
+      <h2>Nueva solicitud de verificación de guía</h2>
+      <p><strong>Nombre:</strong> ${full_name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Tipo de documentación:</strong> ${doc_type}</p>
+      <p><strong>Descripción:</strong> ${doc_description || "Sin descripción"}</p>
+      <p><strong>Documento:</strong> <a href="${doc_url}">Ver documento</a></p>
+      <p>Revisa esta solicitud desde el panel de administración de Routravel.</p>
+    `;
+
+    const emailSubject = `Nueva solicitud de verificación: ${full_name}`;
+
+    // Try to send via Resend if API key is configured
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
     if (resendApiKey) {
-      const emailHtml = `
-        <h2>Nueva solicitud de verificación de guia</h2>
-        <p><strong>Nombre:</strong> ${full_name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Tipo de documentación:</strong> ${doc_type}</p>
-        <p><strong>Descripción:</strong> ${doc_description || 'Sin descripción'}</p>
-        <p><strong>Documento:</strong> <a href="${doc_url}">Ver documento</a></p>
-        <p>Revisa esta solicitud desde el panel de administración de Routravel.</p>
-      `;
-
       await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -70,10 +75,18 @@ Deno.serve(async (req: Request) => {
         },
         body: JSON.stringify({
           from: "Routravel <noreply@routravel.com>",
-          to: ["routravelizate@gmail.com"],
-          subject: `Nueva solicitud de verificación: ${full_name}`,
+          to: [ADMIN_EMAIL],
+          subject: emailSubject,
           html: emailHtml,
         }),
+      });
+    } else {
+      // No Resend key: queue the email so it can be sent later
+      await supabase.from("email_queue").insert({
+        to_email: ADMIN_EMAIL,
+        subject: emailSubject,
+        html_body: emailHtml,
+        status: "pendiente",
       });
     }
 
