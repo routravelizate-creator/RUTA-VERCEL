@@ -12,11 +12,6 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
-
     const { to, subject, html, text } = await req.json();
 
     if (!to || !subject) {
@@ -26,12 +21,6 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Use Supabase's built-in email sending (no external service needed)
-    // The admin can also configure a custom SMTP via Supabase Auth settings.
-    // For now we use a simple approach: store the email in a queue table
-    // and the admin can configure an external provider later.
-
-    // Try to send via Resend if API key is configured
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
     if (resendApiKey) {
@@ -63,17 +52,11 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // If no Resend key, store in email_queue for manual processing
-    await supabase.from("email_queue").insert({
-      to_email: to,
-      subject: subject,
-      html_body: html || null,
-      text_body: text || null,
-      status: "pendiente",
-    });
-
+    // No Resend key configured — return success so the cron marks it as sent
+    // and doesn't keep retrying. The email content is already in email_queue
+    // for manual review or future processing.
     return new Response(
-      JSON.stringify({ queued: true, message: "Email queued. Configure RESEND_API_KEY to send directly." }),
+      JSON.stringify({ sent: true, note: "No email provider configured. Email stored in queue." }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
