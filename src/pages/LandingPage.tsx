@@ -66,26 +66,25 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* FORMATO */}
+      {/* CÓMO FUNCIONA */}
       <section id="formato" className="py-24 bg-sand-50">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <p className="text-forest-600 text-sm uppercase tracking-widest font-medium mb-2">Como funciona</p>
-            <h2 className="font-serif text-4xl md:text-5xl text-sand-900 mb-4">El formato</h2>
-            <p className="font-serif text-2xl text-sand-700">Del mapa a tu bolsillo.</p>
+            <p className="text-forest-600 text-sm uppercase tracking-widest font-medium mb-2">Cómo funciona</p>
+            <h2 className="font-serif text-4xl md:text-5xl text-sand-900 mb-4">De la idea al volante</h2>
+            <p className="text-sand-600 text-lg max-w-2xl mx-auto">Sin planificación interminable. Eliges una ruta, descargas el mapa y conduces.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: Compass, num: '01', title: 'Encuentra una mirada', desc: 'Explora rutas con un estilo de viaje real detrás, no un algoritmo de likes.' },
-              { icon: MapPin, num: '02', title: 'Abre el mapa', desc: 'Puntos exactos, horarios y observaciones, listo para abrir en Google Maps.' },
-              { icon: Navigation, num: '03', title: 'Sal a rodar', desc: 'Descarga el GPX y el PDF del itinerario y arranca el coche.' },
+              { icon: Compass, title: 'Elige una ruta', desc: 'Cada ruta la crea un viajero que ya la ha hecho. Con puntos reales, horarios y consejos que no encontrarás en Google.' },
+              { icon: Download, title: 'Descarga el mapa', desc: 'Un archivo GPX con todos los puntos de interés y un PDF con el itinerario completo. Abre en Google Maps, Maps.me o tu navegador GPS.' },
+              { icon: Navigation, title: 'Conduce sin perderte', desc: 'Sigue la ruta con GPS, para donde quieras y disfruta del viaje. Sin buscar direcciones, sin improvisar.' },
             ].map((step, i) => (
               <div key={i} className="text-center group">
                 <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-forest-50 flex items-center justify-center group-hover:bg-forest-100 transition-colors">
                   <step.icon className="w-8 h-8 text-forest-600" />
                 </div>
-                <p className="text-sand-400 font-serif text-2xl mb-2">{step.num}</p>
                 <h3 className="font-serif text-xl text-sand-900 mb-3">{step.title}</h3>
                 <p className="text-sand-600 leading-relaxed">{step.desc}</p>
               </div>

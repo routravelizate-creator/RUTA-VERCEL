@@ -39,7 +39,7 @@ export function BlogPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {posts.map(post => (
-              <article key={post.id} className="card overflow-hidden group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in">
+              <Link key={post.id} to={`/blog/${post.id}`} className="block card overflow-hidden group cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in">
                 <div className="relative h-56 overflow-hidden">
                   <img
                     src={post.image_url}
@@ -54,11 +54,11 @@ export function BlogPage() {
                   </div>
                   <h2 className="font-serif text-2xl text-sand-900 mb-2 group-hover:text-forest-600 transition-colors">{post.title}</h2>
                   <p className="text-sand-600 leading-relaxed mb-4 line-clamp-3">{post.excerpt}</p>
-                  <Link to={`/blog/${post.id}`} className="inline-flex items-center gap-2 text-forest-600 font-medium text-sm group-hover:gap-3 transition-all">
+                  <span className="inline-flex items-center gap-2 text-forest-600 font-medium text-sm group-hover:gap-3 transition-all">
                     Leer más <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         )}

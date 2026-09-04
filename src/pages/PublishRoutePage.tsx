@@ -29,7 +29,7 @@ export function PublishRoutePage() {
   const [gpxFileName, setGpxFileName] = useState('')
 
   useEffect(() => {
-    if (!authLoading && (!profile || profile.status !== 'aprobado' || profile.role !== 'routraveler')) {
+    if (!authLoading && (!profile || profile.status !== 'aprobado' || (profile.role !== 'routraveler' && profile.role !== 'editor' && profile.role !== 'admin'))) {
       navigate('/')
     }
   }, [profile, authLoading, navigate])

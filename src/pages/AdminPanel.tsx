@@ -157,7 +157,7 @@ export function AdminPanel() {
                     <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
                       <BadgeCheck className="w-5 h-5 text-amber-600" />
                     </div>
-                    <p className="text-sm text-sand-500">Verificaciones de guias</p>
+                    <p className="text-sm text-sand-500">Verificaciones de guías</p>
                   </div>
                   <p className="font-serif text-4xl text-sand-900">{verificationCount}</p>
                   <p className="text-sm text-sand-500 mt-1">solicitudes pendientes de revisión</p>

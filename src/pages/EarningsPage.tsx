@@ -102,7 +102,7 @@ export function EarningsPage() {
           </div>
         </div>
 
-        {/* Comision de la plataforma */}
+        {/* Comisión de la plataforma */}
         <div className="card p-5 mb-8 bg-sand-50 border-sand-200">
           <div className="flex items-center justify-between">
             <div>

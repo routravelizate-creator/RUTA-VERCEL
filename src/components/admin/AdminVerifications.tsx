@@ -34,7 +34,7 @@ export function AdminVerifications() {
 
   return (
     <div>
-      <h2 className="font-serif text-2xl text-sand-900 mb-6">Verificaciones de guias</h2>
+      <h2 className="font-serif text-2xl text-sand-900 mb-6">Verificaciones de guías</h2>
 
       {loading ? (
         <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-forest-600" /></div>

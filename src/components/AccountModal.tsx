@@ -276,7 +276,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
               >
                 <MapPin className="w-4 h-4" /> Ver mis rutas compradas
               </button>
-              {(profile.role === 'routraveler' || profile.role === 'admin') && (
+              {(profile.role === 'routraveler' || profile.role === 'editor' || profile.role === 'admin') && (
                 <button
                   onClick={() => { onClose(); navigate('/publicar') }}
                   className="w-full btn-secondary text-sm mb-2"
