@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
-import { MapPin, Download, FileText, CreditCard, Loader as Loader2, CircleCheck as CheckCircle, Lock, ArrowLeft, ExternalLink, Mail } from 'lucide-react'
-import { supabase, Route, Waypoint } from '../lib/supabase'
+import { MapPin, Download, FileText, CreditCard, Loader as Loader2, CircleCheck as CheckCircle, Lock, ArrowLeft, ExternalLink, Mail, Star, MessageSquare, Send } from 'lucide-react'
+import { supabase, Route, Waypoint, Review } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 
 export function RouteDetailPage() {
@@ -19,6 +19,11 @@ export function RouteDetailPage() {
   const [showGuestInput, setShowGuestInput] = useState(false)
   const [generatingPdf, setGeneratingPdf] = useState(false)
   const [generatingGpx, setGeneratingGpx] = useState(false)
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [reviewRating, setReviewRating] = useState(5)
+  const [reviewComment, setReviewComment] = useState('')
+  const [submittingReview, setSubmittingReview] = useState(false)
+  const [hasReviewed, setHasReviewed] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -54,6 +59,29 @@ export function RouteDetailPage() {
         .eq('payment_status', 'pagado')
         .maybeSingle()
         .then(({ data }) => setHasPurchased(!!data))
+    }
+  }, [profile, id])
+
+  useEffect(() => {
+    if (id) {
+      supabase
+        .from('reviews')
+        .select('*, reviewer:profiles!reviewer_id(full_name, avatar_url)')
+        .eq('route_id', id)
+        .order('created_at', { ascending: false })
+        .then(({ data }) => setReviews(data as Review[] || []))
+    }
+  }, [id])
+
+  useEffect(() => {
+    if (profile && id) {
+      supabase
+        .from('reviews')
+        .select('id')
+        .eq('route_id', id)
+        .eq('reviewer_id', profile.id)
+        .maybeSingle()
+        .then(({ data }) => setHasReviewed(!!data))
     }
   }, [profile, id])
 
@@ -140,6 +168,23 @@ export function RouteDetailPage() {
       setError('No se pudo generar el PDF.')
     }
     setGeneratingPdf(false)
+  }
+
+  const handleSubmitReview = async () => {
+    if (!profile || !id) return
+    setSubmittingReview(true)
+    const { data, error: reviewError } = await supabase
+      .from('reviews')
+      .insert({ reviewer_id: profile.id, route_id: id, rating: reviewRating, comment: reviewComment })
+      .select('*, reviewer:profiles!reviewer_id(full_name, avatar_url)')
+      .maybeSingle()
+    if (!reviewError && data) {
+      setReviews(prev => [data as Review, ...prev])
+      setHasReviewed(true)
+      setReviewComment('')
+      setReviewRating(5)
+    }
+    setSubmittingReview(false)
   }
 
   const handleDownloadGpx = async () => {
@@ -299,6 +344,112 @@ export function RouteDetailPage() {
             )}
           </div>
 
+          {/* RESEÑAS */}
+          <div className="mt-8">
+            <div className="card p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <MessageSquare className="w-5 h-5 text-forest-600" />
+                <h3 className="font-serif text-xl text-sand-900">Reseñas de viajeros</h3>
+                {reviews.length > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-forest-100 text-forest-700 text-xs font-medium">
+                    {reviews.length} {reviews.length === 1 ? 'reseña' : 'reseñas'}
+                  </span>
+                )}
+              </div>
+
+              {reviews.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-sand-100 flex items-center justify-center">
+                    <Star className="w-6 h-6 text-sand-400" />
+                  </div>
+                  <p className="text-sand-500 text-sm">Todavía no hay reseñas. ¡Sé el primero en valorar esta ruta!</p>
+                </div>
+              ) : (
+                <div className="space-y-4 mb-6">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="pb-4 border-b border-sand-100 last:border-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        {review.reviewer?.avatar_url ? (
+                          <img src={review.reviewer.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-forest-100 flex items-center justify-center">
+                            <span className="text-xs font-medium text-forest-700">
+                              {(review.reviewer?.full_name || 'V').charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-sand-900">{review.reviewer?.full_name || 'Viajero anónimo'}</p>
+                          <div className="flex items-center gap-0.5 mt-0.5">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-3.5 h-3.5 ${star <= review.rating ? 'text-amber-400 fill-amber-400' : 'text-sand-200'}`}
+                              />
+                            ))}
+                            <span className="text-xs text-sand-400 ml-2">
+                              {new Date(review.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      {review.comment && (
+                        <p className="text-sm text-sand-600 leading-relaxed pl-11">{review.comment}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {hasPurchased && !hasReviewed && profile && (
+                <div className="pt-4 border-t border-sand-200">
+                  <p className="text-sm font-medium text-sand-700 mb-3">Valora esta ruta</p>
+                  <div className="flex items-center gap-1 mb-3">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setReviewRating(star)}
+                        className="transition-transform hover:scale-110"
+                      >
+                        <Star className={`w-6 h-6 ${star <= reviewRating ? 'text-amber-400 fill-amber-400' : 'text-sand-300'}`} />
+                      </button>
+                    ))}
+                  </div>
+                  <textarea
+                    rows={3}
+                    value={reviewComment}
+                    onChange={e => setReviewComment(e.target.value)}
+                    className="input-field text-sm mb-3"
+                    placeholder="Cuéntanos qué te pareció la ruta. ¿Los puntos fueron útiles? ¿La conducción fue buena?"
+                  />
+                  <button
+                    onClick={handleSubmitReview}
+                    disabled={submittingReview}
+                    className="btn-primary text-sm flex items-center gap-2"
+                  >
+                    {submittingReview ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Send className="w-4 h-4" /> Publicar reseña</>}
+                  </button>
+                </div>
+              )}
+
+              {hasPurchased && hasReviewed && (
+                <div className="pt-4 border-t border-sand-200">
+                  <p className="text-sm text-forest-600 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4" /> Ya has valorado esta ruta. ¡Gracias por tu opinión!
+                  </p>
+                </div>
+              )}
+
+              {!hasPurchased && (
+                <div className="pt-4 border-t border-sand-200">
+                  <p className="text-sm text-sand-500 text-center">
+                    Compra esta ruta para poder dejar tu reseña
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="lg:col-span-1">
             <div className="sticky top-28">
               <div className="card p-6">

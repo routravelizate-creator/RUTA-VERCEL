@@ -177,6 +177,53 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* PROGRAMA DE AFILIADOS */}
+      <section id="afiliados" className="py-24 bg-sand-50">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="text-forest-600 text-sm uppercase tracking-widest font-medium mb-2">Programa de afiliados</p>
+              <h2 className="font-serif text-4xl text-sand-900 mb-6 leading-tight">
+                Recomienda rutas y gana un 15% de cada venta
+              </h2>
+              <p className="text-sand-600 leading-relaxed mb-6">
+                Si tienes un blog, un canal de viajes o simplemente amigos a los que les gusta road tripping, puedes ganar dinero recomendando rutas de Routravel.
+              </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-forest-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-forest-700">1</span>
+                  </div>
+                  <p className="text-sm text-sand-700">Regístrate y pídenos tu enlace de afiliado. Te lo activamos en 24 horas.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-forest-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-forest-700">2</span>
+                  </div>
+                  <p className="text-sm text-sand-700">Comparte tu enlace en tu blog, redes sociales o con amigos.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-forest-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-forest-700">3</span>
+                  </div>
+                  <p className="text-sm text-sand-700">Ganas un 15% de cada compra que venga desde tu enlace. Sin límite.</p>
+                </div>
+              </div>
+              <a href="mailto:routravelizate@gmail.com?subject=Programa%20de%20afiliados" className="btn-primary inline-flex items-center gap-2">
+                Solicitar enlace de afiliado <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+            <div className="relative">
+              <img
+                src="https://images.pexels.com/photos/5775818/pexels-photo-5775818.jpeg?auto=compress&cs=tinysrgb&w=900"
+                alt="Programa de afiliados de viajes"
+                className="rounded-2xl shadow-xl w-full h-80 object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

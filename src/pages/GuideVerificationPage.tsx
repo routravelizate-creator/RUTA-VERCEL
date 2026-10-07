@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ShieldCheck, FileText, Upload, Loader as Loader2, ArrowLeft, CircleCheck as CheckCircle, Mail } from 'lucide-react'
+import { ShieldCheck, Loader as Loader2, ArrowLeft, CircleCheck as CheckCircle, Mail, Compass } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export function GuideVerificationPage() {
@@ -13,7 +13,7 @@ export function GuideVerificationPage() {
   const [form, setForm] = useState({
     full_name: profile?.full_name || '',
     email: profile?.email || '',
-    doc_type: 'autonomo',
+    doc_type: 'ruta_ejemplo',
     doc_description: '',
     doc_url: '',
   })
@@ -58,7 +58,7 @@ export function GuideVerificationPage() {
             <CheckCircle className="w-8 h-8 text-forest-600" />
           </div>
           <h2 className="font-serif text-2xl text-sand-900 mb-2">Solicitud enviada</h2>
-          <p className="text-sand-600 mb-6">Hemos recibido tu documentación. Nos pondremos en contacto contigo lo antes posible.</p>
+          <p className="text-sand-600 mb-6">Hemos recibido tu solicitud. Revisaremos tu ruta de ejemplo y te responderemos lo antes posible.</p>
           <button onClick={() => navigate('/')} className="btn-primary">Volver al inicio</button>
         </div>
       </div>
@@ -75,27 +75,21 @@ export function GuideVerificationPage() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl bg-forest-50 flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6 text-forest-600" />
+              <Compass className="w-6 h-6 text-forest-600" />
             </div>
             <div>
-              <h1 className="font-serif text-3xl text-sand-900">Verificación de guía</h1>
-              <p className="text-sand-600 text-sm">Solicita ser guía verificado en Routravel</p>
+              <h1 className="font-serif text-3xl text-sand-900">Ser Routraveler</h1>
+              <p className="text-sand-600 text-sm">Publica tus rutas y gana dinero con ellas</p>
             </div>
           </div>
         </div>
 
         <div className="card p-6 mb-6 bg-forest-50 border-forest-200">
           <p className="text-sm text-forest-700 leading-relaxed">
-            Para publicar viajes guiados en Routravel necesitamos verificar tu documentación. Los documentos que solemos pedir:
+            Como Routraveler puedes publicar tus rutas de viaje en Routravel y ganar dinero con cada venta. Te quedas con el 80% de cada venta y nosotros nos encargamos de los pagos y la plataforma.
           </p>
-          <ul className="mt-3 space-y-1 text-sm text-forest-700">
-            <li>• Alta de autónomo o empresa de viajes</li>
-            <li>• Seguro de responsabilidad civil</li>
-            <li>• Título oficial de guía turístico (si aplica)</li>
-            <li>• Licencia o autorización de la comunidad autónoma</li>
-          </ul>
-          <p className="mt-3 text-sm text-forest-700">
-            Sube tus documentos a un servicio externo (Google Drive, Dropbox, etc.) y pega el enlace aquí. La documentación se enviará a routravelizate@gmail.com para su revisión.
+          <p className="mt-3 text-sm text-forest-700 leading-relaxed">
+            Para empezar, necesitamos ver una ruta de ejemplo. Crea un mapa en Google My Maps con los puntos de una ruta que conozcas bien y compártenos el enlace.
           </p>
         </div>
 
@@ -120,28 +114,25 @@ export function GuideVerificationPage() {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Tipo de documentación *</label>
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Tipo de ruta *</label>
             <select required value={form.doc_type} onChange={e => setForm({ ...form, doc_type: e.target.value })} className="input-field">
-              <option value="autonomo">Alta de autónomo</option>
-              <option value="empresa">Empresa de viajes</option>
-              <option value="seguro">Seguro de responsabilidad civil</option>
-              <option value="titulo">Título de guía turístico</option>
-              <option value="licencia">Licencia autonómica</option>
+              <option value="ruta_ejemplo">Ruta en coche</option>
+              <option value="ruta_senderismo">Ruta de senderismo</option>
+              <option value="ruta_bici">Ruta en bicicleta</option>
+              <option value="ruta_moto">Ruta en moto</option>
               <option value="otros">Otros</option>
             </select>
           </div>
 
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block">Descripción (opcional)</label>
-            <textarea rows={3} value={form.doc_description} onChange={e => setForm({ ...form, doc_description: e.target.value })} className="input-field" placeholder="Cuéntanos brevemente sobre tu experiencia como guía..." />
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Cuéntanos sobre tu ruta *</label>
+            <textarea required rows={3} value={form.doc_description} onChange={e => setForm({ ...form, doc_description: e.target.value })} className="input-field" placeholder="¿Qué zona cubre? ¿Cuántos puntos tiene? ¿Por qué merece la pena?" />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-sand-700 mb-1 block flex items-center gap-2">
-              <Upload className="w-4 h-4" /> Enlace al documento *
-            </label>
-            <input required value={form.doc_url} onChange={e => setForm({ ...form, doc_url: e.target.value })} className="input-field" placeholder="https://drive.google.com/..." />
-            <p className="text-xs text-sand-500 mt-1">Sube tu documentación a Google Drive, Dropbox o similar y pega el enlace aquí.</p>
+            <label className="text-sm font-medium text-sand-700 mb-1 block">Enlace a tu mapa (Google My Maps) *</label>
+            <input required value={form.doc_url} onChange={e => setForm({ ...form, doc_url: e.target.value })} className="input-field" placeholder="https://www.google.com/maps/d/..." />
+            <p className="text-xs text-sand-500 mt-1">Crea un mapa en Google My Maps con los puntos de tu ruta y compártenos el enlace público.</p>
           </div>
 
           <button type="submit" disabled={saving} className="w-full btn-primary flex items-center justify-center gap-2">

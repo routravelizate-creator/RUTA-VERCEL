@@ -24,6 +24,7 @@ export function Footer() {
               <li><a href="/#comunidad" className="text-sand-300 hover:text-white transition-colors">Comunidad</a></li>
               <li><a href="/blog" className="text-sand-300 hover:text-white transition-colors">Blog</a></li>
               <li><a href="/#routraveler" className="text-sand-300 hover:text-white transition-colors">Programa Routraveler</a></li>
+              <li><a href="/#afiliados" className="text-sand-300 hover:text-white transition-colors">Programa de afiliados</a></li>
             </ul>
           </div>
 

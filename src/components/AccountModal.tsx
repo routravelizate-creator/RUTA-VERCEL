@@ -77,13 +77,6 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
       .eq('id', data.user!.id)
       .maybeSingle()
 
-    if (profileData?.status === 'pendiente') {
-      setError('Tu cuenta está pendiente de aprobación por el administrador.')
-      await supabase.auth.signOut()
-      setLoading(false)
-      return
-    }
-
     if (profileData?.status === 'rechazado') {
       setError('Tu cuenta ha sido rechazada. Contacta con el administrador.')
       await supabase.auth.signOut()
@@ -216,22 +209,12 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             </div>
           )}
 
-          <div className={`px-4 py-3 rounded-xl mb-4 flex items-center gap-3 ${
-            profile.status === 'aprobado'
-              ? 'bg-forest-50 text-forest-700 border border-forest-200'
-              : profile.status === 'pendiente'
-              ? 'bg-amber-50 text-amber-700 border border-amber-200'
-              : 'bg-red-50 text-red-700 border border-red-200'
-          }`}>
-            {profile.status === 'aprobado' && <CheckCircle className="w-5 h-5 flex-shrink-0" />}
-            {profile.status === 'pendiente' && <Clock className="w-5 h-5 flex-shrink-0" />}
-            {profile.status === 'rechazado' && <XCircle className="w-5 h-5 flex-shrink-0" />}
-            <span className="text-sm font-medium">
-              {profile.status === 'aprobado' && 'Cuenta aprobada'}
-              {profile.status === 'pendiente' && 'Pendiente de aprobación'}
-              {profile.status === 'rechazado' && 'Cuenta rechazada'}
-            </span>
-          </div>
+          {profile.status === 'rechazado' && (
+            <div className="px-4 py-3 rounded-xl mb-4 flex items-center gap-3 bg-red-50 text-red-700 border border-red-200">
+              <XCircle className="w-5 h-5 flex-shrink-0" />
+              <span className="text-sm font-medium">Cuenta rechazada</span>
+            </div>
+          )}
 
           <button
             onClick={() => { setShowNotifications(!showNotifications); if (!showNotifications) markAllRead() }}
@@ -268,31 +251,35 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
             </div>
           )}
 
-          {profile.status === 'aprobado' && (
-            <>
-              <button
-                onClick={() => { onClose(); navigate('/mis-rutas') }}
-                className="w-full btn-primary text-sm mb-2 flex items-center justify-center gap-2"
-              >
-                <MapPin className="w-4 h-4" /> Ver mis rutas compradas
-              </button>
-              {(profile.role === 'routraveler' || profile.role === 'editor' || profile.role === 'admin') && (
-                <button
-                  onClick={() => { onClose(); navigate('/publicar') }}
-                  className="w-full btn-secondary text-sm mb-2"
-                >
-                  Publicar una ruta
-                </button>
-              )}
-              {profile.role === 'routraveler' && (
-                <button
-                  onClick={() => { onClose(); navigate('/mis-ganancias') }}
-                  className="w-full btn-secondary text-sm mb-2"
-                >
-                  Mis ganancias
-                </button>
-              )}
-            </>
+          <button
+            onClick={() => { onClose(); navigate('/mis-rutas') }}
+            className="w-full btn-primary text-sm mb-2 flex items-center justify-center gap-2"
+          >
+            <MapPin className="w-4 h-4" /> Ver mis rutas compradas
+          </button>
+          {(profile.role === 'routraveler' || profile.role === 'editor' || profile.role === 'admin') && (
+            <button
+              onClick={() => { onClose(); navigate('/publicar') }}
+              className="w-full btn-secondary text-sm mb-2"
+            >
+              Publicar una ruta
+            </button>
+          )}
+          {profile.role === 'routraveler' && (
+            <button
+              onClick={() => { onClose(); navigate('/mis-ganancias') }}
+              className="w-full btn-secondary text-sm mb-2"
+            >
+              Mis ganancias
+            </button>
+          )}
+          {profile.role === 'viajero' && (
+            <button
+              onClick={() => { onClose(); navigate('/verificacion-guia') }}
+              className="w-full btn-secondary text-sm mb-2 flex items-center justify-center gap-2"
+            >
+              <ShieldCheck className="w-4 h-4" /> Solicitar ser Routraveler
+            </button>
           )}
 
           <button
@@ -319,7 +306,7 @@ export function AccountModal({ onClose, onSignOut }: AccountModalProps) {
           </div>
           <h3 className="font-serif text-xl text-sand-900 mb-2">¡Cuenta creada!</h3>
           <p className="text-sm text-sand-600 leading-relaxed">
-            Tu cuenta ya está activa. Ya puedes explorar y comprar rutas. ¡Bienvenido a Routravel!
+            Tu cuenta ya está activa. Ya puedes explorar y comprar rutas. Si quieres publicar tus propias rutas, puedes solicitar ser Routraveler desde tu cuenta.
           </p>
           <button onClick={onClose} className="mt-5 w-full btn-primary text-sm">
             Empezar a explorar
